@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.0.16"
+const VERSION = "0.0.17"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -7,10 +7,9 @@ const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
 // キャッシュするファイル名
 const CACHE_FILES = [
     "index.html",
-    // "/style.css",
+    "/style.css",
     // "/script.js",
 	"manifest.json",
-	// "/sw.js",
 	"icons/apple-touch-icon.png",
     "icons/icon.svg",
 	"icons/favicon.ico",
@@ -64,4 +63,11 @@ self.addEventListener("fetch", (event) => {
             }
         })(),
     );
+});
+
+// バージョン情報の提供
+self.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "GET_VERSION") {
+        event.source.postMessage({ type: "VERSION", version: VERSION });
+    }
 });
