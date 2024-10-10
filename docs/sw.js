@@ -1,12 +1,11 @@
 // バージョン
-const VERSION = "0.0.2"
+const VERSION = "0.0.3"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
 
 // キャッシュするファイル名
 const CACHE_FILES = [
-    "/",
     "/index.html",
     "/style.css",
     "/script.js",
@@ -23,7 +22,7 @@ self.addEventListener("install", (event) => {
     event.waitUntil(
         (async () => {
             const cache = await caches.open(CACHE_NAME);
-            cache.addAll(CACHE_FILES);
+            await cache.addAll(CACHE_FILES);
         })(),
     );
 });
@@ -47,19 +46,16 @@ self.addEventListener("activate", (event) => {
 
 // フェッチ時処理
 self.addEventListener("fetch", (event) => {
-    if (event.request.mode === "navigate") {
-        event.respondWith(caches.match("/"));
-        return;
-    }
-
     event.respondWith(
         (async () => {
-            const cache = await caches.open(CACHE_NAME);
-            const cachedResponse = await cache.match(event.request.url);
-            if (cachedResponse) {
-                return cachedResponse;
+            const resource = await caches.match(event.request);
+            if (resource) {
+                return resource;
             }
-            return new Response(null, { status: 404 });
+            const response = await fetch(event.request);
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(event.request, response.clone());
+            return response;
         })(),
     );
 });
