@@ -7,14 +7,14 @@ const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
 // キャッシュするファイル名
 const CACHE_FILES = [
     "/index.html",
-    "/style.css",
-    "/script.js",
+    // "/style.css",
+    // "/script.js",
 	"/manifest.json",
-	"/sw.js",
-	"/icons/apple-touch-icon.png",	
-	"/icons/favicon.ico",
-	"/icons/icon192.png",
-	"/icons/icon512.png",
+	// "/sw.js",
+	// "/icons/apple-touch-icon.png",	
+	// "/icons/favicon.ico",
+	// "/icons/icon192.png",
+	// "/icons/icon512.png",
 ];
 
 // インストール時処理
