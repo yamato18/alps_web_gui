@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.0.4"
+const VERSION = "0.0.6"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -11,10 +11,11 @@ const CACHE_FILES = [
     // "/script.js",
 	"/manifest.json",
 	// "/sw.js",
-	// "/icons/apple-touch-icon.png",	
-	// "/icons/favicon.ico",
-	// "/icons/icon192.png",
-	// "/icons/icon512.png",
+	"/icons/apple-touch-icon.png",
+    "/icons/icon.svg",
+	"/icons/favicon.ico",
+	"/icons/icon192.png",
+	"/icons/icon512.png",
 ];
 
 // インストール時処理
