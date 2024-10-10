@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.0.10"
+const VERSION = "0.0.11"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -50,6 +50,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         (async () => {
             const resource = await caches.match(event.request);
+            console.log(`[Service Worker] Fetched resource ${event.request.url}`);
             if (resource) {
                 return resource;
             }
