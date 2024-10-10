@@ -2,7 +2,7 @@
     "name"              : "ALPS Web GUI",
     "short_name"        : "ALPS Web GUI",
     "description"       : "ALPS Web GUI",
-    "start_url"         : "/",
+    "start_url"         : "index.html",
     "display"           : "standalone",
     "background_color"  : "#fff",
     "theme_color"       : "#fff",
