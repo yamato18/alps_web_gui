@@ -26,10 +26,10 @@
                         navigator.serviceWorker.addEventListener("message", (event) => {
                             if (event.data && event.data.type === "VERSION") {
                                 const version = event.data.version;
-                                console.log(`Service Worker version: ${version}`);
+                                console.log(`ServiceWorker version: ${version}`);
                                 document.getElementById("sw-version").textContent = `Ver. ${version}`;
                             }
-                        })
+                        });
                     },
                     (error) => {
                         console.error(`ServiceWorker registration failed: ${error}`);
