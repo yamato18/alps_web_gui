@@ -11,9 +11,10 @@
         <link rel="manifest" href="manifest.json">
     </head>
     <body>
-        <h1 class="title">ALPS Web GUI</h1>
+        <h1 id="title">ALPS Web GUI</h1>
         <p>これはテストページです</p>
         <p>Hello!! World!!</p>
+        <p id="sw-version">Ver. N/A</p>
         <script>
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.register("sw.js").then(
@@ -30,7 +31,8 @@
                                         navigator.serviceWorker.addEventListener("message", (event) => {
                                             if (event.data && event.data.type === "VERSION") {
                                                 const newVersion = event.data.version;
-                                                alert(`【Webアプリのアップデート】\nWebアプリが更新されました。\nWebアプリを更新してください。\niOS端末など一部の環境では更新が正しく適用されない場合があります。その場合はWebアプリを一度削除し、キャッシュの削除などを実行の上で再度インストールしてください。\n\nVer. ${newVersion}`)
+                                                document.getElementById("sw-version").textContent = `Ver. ${newVersion}`;
+                                                alert(`【Webアプリのアップデート】\nWebアプリが更新されました。\nWebアプリを更新してください。\niOS端末など一部の環境では更新が正しく適用されない場合があります。その場合はWebアプリを一度削除し、キャッシュの削除などを実行の上で再度インストールしてください。\n\nVer. ${newVersion}`);
                                             }
                                         });
                                     }
