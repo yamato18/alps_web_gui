@@ -34,10 +34,12 @@ self.addEventListener("activate", (event) => {
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
+            console.log(names);
+            
             await Promise.all(
                 names.map((name) => {
                     if (name !== CACHE_NAME) {
-                        console.log("delete");
+                        console.log(neme);
                         
                         return caches.delete(name);
                     }
