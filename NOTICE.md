@@ -2,8 +2,6 @@
 
 This web application incorporates the materials listed below.
 
--------------------------------------------------------------------
-
 ## roslibjs-foxglove
 
 **Source**: https://github.com/tier4/roslibjs-foxglove/tree/main
