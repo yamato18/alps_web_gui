@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.2.20"
+const VERSION = "0.2.21"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -31,17 +31,12 @@ self.addEventListener("install", (event) => {
 
 // 更新時処理
 self.addEventListener("activate", (event) => {
-    console.log("Activating");
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
-            console.log(names);
-            
             await Promise.all(
                 names.map((name) => {
-                    console.log(name);
                     if (name !== CACHE_NAME) {
-                        console.log("delete: ", name);
                         return caches.delete(name);
                     }
                 }),
