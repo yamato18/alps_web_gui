@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.2.7"
+const VERSION = "0.2.8"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -25,12 +25,11 @@ self.addEventListener("install", (event) => {
             await cache.addAll(CACHE_FILES);
         })(),
     );
+    console.log("[Service Worker] Installed");
 });
 
 // 更新時処理
 self.addEventListener("activate", (event) => {
-    console.log("activate");
-    
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
@@ -40,6 +39,7 @@ self.addEventListener("activate", (event) => {
                 names.map((name) => {
                     console.log(name);
                     if (name !== CACHE_NAME) {
+                        console.log("delete: ", name);
                         return caches.delete(name);
                     }
                 }),
@@ -47,6 +47,7 @@ self.addEventListener("activate", (event) => {
             await clients.claim();
         })(),
     );
+    console.log("[Service Worker] Activated");
 });
 
 // フェッチ時処理
@@ -68,6 +69,7 @@ self.addEventListener("fetch", (event) => {
             }
         })(),
     );
+    console.log("[Service Worker] Fetched");
 });
 
 // バージョン送信
