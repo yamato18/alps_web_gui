@@ -11,7 +11,7 @@
         <link rel="manifest" href="manifest.json">
     </head>
     <body>
-        <h1 id="title">ALPS Web GUI</h1>
+        <h1 class="title">ALPS Web GUI</h1>
         <p>これはテストページです</p>
         <p>Hello!! World!!</p>
         <p id="sw-version">Ver. N/A</p>
@@ -24,21 +24,30 @@
                         registration.addEventListener("updatefound", () => {
                             const installWorker = registration.installing;
                             if (installWorker != null) {
-                                installWorker.onstatechange = (event) => {
-                                    if (event.target.state == "installed") {
+                                installWorker.onstatechange = (e) => {
+                                    if (e.target.state == "installed") {
                                         navigator.serviceWorker.controller.postMessage({ type: "GET_VERSION" });
-
                                         navigator.serviceWorker.addEventListener("message", (event) => {
                                             if (event.data && event.data.type === "VERSION") {
                                                 const newVersion = event.data.version;
                                                 document.getElementById("sw-version").textContent = `Ver. ${newVersion}`;
-                                                alert(`【Webアプリのアップデート】\nWebアプリが更新されました。\nWebアプリを更新してください。\niOS端末など一部の環境では更新が正しく適用されない場合があります。その場合はWebアプリを一度削除し、キャッシュの削除などを実行の上で再度インストールしてください。\n\nVer. ${newVersion}`);
+                                                alert(`【アップデート Ver. ${newVersion}】\nWebアプリが更新されました。アプリを再起動してください。\niOS端末など一部の環境では更新が正しく適用されない場合があります。Webアプリを一度削除し、キャッシュの削除などを実行の上で再度インストールしてください。`);
                                             }
                                         });
                                     }
                                 };
                             }
                         });
+
+                        if (navigator.serviceWorker.controller) {
+                            navigator.serviceWorker.controller.postMessage({ type: "GET_VERSION" });
+                            navigator.serviceWorker.addEventListener("message", (event) => {
+                                if (event.data && event.data.type === "VERSION") {
+                                    const currentVersion = event.data.version;
+                                    document.getElementById("sw-version").textContent = `Ver. ${currentVersion}`;
+                                }
+                            });
+                        }
                     },
                     (error) => {
                         console.error(`ServiceWorker registration failed: ${error}`);
