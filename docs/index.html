@@ -44,7 +44,6 @@
                             navigator.serviceWorker.addEventListener("message", (event) => {
                                 if (event.data && event.data.type === "VERSION") {
                                     const currentVersion = event.data.version;
-                                    console.log("load");
                                     document.getElementById("sw-version").textContent = `Ver. ${currentVersion}`;
                                 }
                             });
