@@ -9,12 +9,17 @@
         <title>ALPS Web GUI</title>
         <link rel="stylesheet" href="style.css">
         <link rel="manifest" href="manifest.json">
+        <script type="text/javascript" src="roslib.min.js"></script>
+        <!-- <script type="text/javascript" src="tier4-roslibjs-foxglove-0.0.4-bundle.js"></script> -->
     </head>
     <body>
         <h1 class="title">ALPS Web GUI</h1>
         <p>これはテストページです</p>
         <p>Hello!! World!!</p>
+        <p id="status">ROS状態</p>
+        <p><img id="ros_image"/></p>
         <p id="sw-version">Ver. N/A</p>
-        <script src="script.js"></script>
+        <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="app.js"></script>
     </body>
 </html>
