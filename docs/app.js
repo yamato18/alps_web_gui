@@ -1,6 +1,6 @@
 function ROS(URL) {
     const ros = new ROSLIB.Ros({
-        url: `ws://${URL}:9090`,
+        url: `wss://${URL}:9090`,
         options: {
             ros_domain_id: "10"
         }
