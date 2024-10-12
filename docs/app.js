@@ -1,5 +1,5 @@
 const ros = new ROSLIB.Ros({
-    url: "ws://dell-pc.local:9090",
+    url: "wss://dell-pc.local:9090",
     options: {
         ros_domain_id: "10"
     }
