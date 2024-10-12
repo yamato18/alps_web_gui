@@ -25,6 +25,7 @@
                             const installWorker = registration.installing;
                             if (installWorker != null) {
                                 installWorker.onstatechange = (e) => {
+                                    console.log(e.target.state);
                                     if (e.target.state == "activated") {
                                         navigator.serviceWorker.controller.postMessage({ type: "GET_VERSION" });
                                         navigator.serviceWorker.addEventListener("message", (event) => {
