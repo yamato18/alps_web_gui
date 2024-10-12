@@ -18,6 +18,7 @@
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.register("sw.js").then(
                     (registration) => {
+                        console.log(registration === undefined);
                         console.log("ServiceWorker registration successful with scope: ", registration.scope);
                     },
                     (error) => {

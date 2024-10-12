@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.1.2"
+const VERSION = "0.2.0"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -63,4 +63,11 @@ self.addEventListener("fetch", (event) => {
             }
         })(),
     );
+});
+
+// バージョン送信
+self.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "GET_VERSION") {
+        event.source.postMessage({ type: "VERSION", version: VERSION });
+    }
 });
