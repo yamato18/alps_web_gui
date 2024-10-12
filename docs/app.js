@@ -20,7 +20,7 @@ ros.on("close", () => {
 const image = new ROSLIB.Topic({
     ros: ros,
     name: "/image_raw/compressed",
-    messageType: "sensor_msgs/CompressedImage"
+    messageType: "sensor_msgs/msg/CompressedImage"
 });
 
 image.subscribe((message) => {
