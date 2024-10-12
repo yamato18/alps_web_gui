@@ -1,6 +1,6 @@
 function ROS(URL) {
     const ros = new ROSLIB.Ros({
-        url: `wss://${URL}:9090`,
+        url: URL,
         options: {
             ros_domain_id: "10"
         }
@@ -30,7 +30,7 @@ function ROS(URL) {
     });
 }
 
-ROS("localhost");
+ROS("ws://localhost:9090");
 
 const btn = document.getElementById("ipButton");
 btn.addEventListener("click", () => {
