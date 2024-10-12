@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.2.17"
+const VERSION = "0.2.18"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -23,6 +23,7 @@ self.addEventListener("install", (event) => {
         (async () => {
             const cache = await caches.open(CACHE_NAME);
             await cache.addAll(CACHE_FILES);
+            await self.skipWaiting();
         })(),
     );
     console.log("[Service Worker] Installed");
