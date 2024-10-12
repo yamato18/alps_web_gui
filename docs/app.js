@@ -32,7 +32,7 @@ function ROS(URL) {
 
 ROS("localhost");
 
-const btn = document.getElementById(ipButton);
+const btn = document.getElementById("ipButton");
 btn.addEventListener("click", () => {
     const ip = document.getElementById("ipAddress").value;
     ROS(ip);
