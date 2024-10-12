@@ -34,6 +34,6 @@ ROS("localhost");
 
 const btn = document.getElementById(ipButton);
 btn.addEventListener("click", () => {
-    const ip = document.getElementById("ipAddress");
+    const ip = document.getElementById("ipAddress").value;
     ROS(ip);
 });
