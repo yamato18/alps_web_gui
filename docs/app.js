@@ -24,6 +24,6 @@ const image = new ROSLIB.Topic({
 });
 
 image.subscribe((message) => {
-    const data = "data:image/png;base64," + message.data;
+    const data = "data:image/jpeg;base64," + message.data;
     document.getElementById("ros_image").setAttribute("src", data);
 });
