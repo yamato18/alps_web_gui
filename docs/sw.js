@@ -38,9 +38,8 @@ self.addEventListener("activate", (event) => {
             
             await Promise.all(
                 names.map((name) => {
+                    console.log(neme);
                     if (name !== CACHE_NAME) {
-                        console.log(neme);
-                        
                         return caches.delete(name);
                     }
                 }),
