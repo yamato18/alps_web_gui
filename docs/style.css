@@ -55,7 +55,7 @@ select {
     vertical-align: middle;
 }
 
-.status {
+#status {
     font-size: 12px;
     margin: auto;
 }
