@@ -1,10 +1,10 @@
 // バージョン
-const VERSION = "0.4.1"
+const VERSION = "0.4.2"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
 
-// キャッシュするファイル名
+// キャッシュするファイル
 const CACHE_FILES = [
     "index.html",
     "style.css",
