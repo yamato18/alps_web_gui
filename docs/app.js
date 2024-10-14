@@ -1,4 +1,9 @@
-const connectROS = (protocol, ip, port, ros_domain_id) => {
+const connectROS = () => {
+    const protocol = document.getElementById("protocol").value;
+    const ip = document.getElementById("ip").value;
+    const port = document.getElementById("port").value;
+    const ros_domain_id = document.getElementById("ros_domain_id").value;
+
     const ros = new ROSLIB.Ros({
         url: `${protocol}://${ip}:${port}`,
         options: {
@@ -36,3 +41,10 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     });
 }
 
+window.addEventListener("load", () => {
+    connectROS();
+});
+
+document.getElementById("connect").addEventListener("click", () => {
+    connectROS();
+});
