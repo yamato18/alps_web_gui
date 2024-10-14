@@ -46,5 +46,6 @@ window.addEventListener("load", () => {
 });
 
 document.getElementById("connect").addEventListener("click", () => {
+    alert("「接続」が押されました");
     connectROS();
 });
