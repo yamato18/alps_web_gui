@@ -13,12 +13,30 @@
         <!-- <script type="text/javascript" src="tier4-roslibjs-foxglove-0.0.4-bundle.js"></script> -->
     </head>
     <body>
-        <h1 class="title">ALPS Web GUI</h1>
-        <p>これはテストページです</p>
-        <p>Hello!! World!!</p>
-        <p id="status">ROS状態</p>
-        <p><img id="ros_image"/></p>
-        <p id="sw-version">Ver. N/A</p>
+        <div class="title-bar">
+            <div class="title g-padding">ALPS Web GUI</div>
+            <div id="sw-version" class="g-end">Ver. N/A</div>
+            <div class="status g-padding">
+                <span>🟡【ROS接続状況】未接続（ws://localhost:9090 ID=10）</span>
+            </div>
+            <div class="ip-input g-padding">
+                <select name="protocol" id="protocol">
+                    <option value="ws">ws://</option>
+                    <option value="wss">wss://</option>
+                </select>
+                <label for="id">IP: </label>
+                <input type="text" id="ip" value="localhost">
+                <label for="port">Port: </label>
+                <input type="number" name="port" id="port" value="9090">
+                <label for="ros_domain_id">ID: </label>
+                <input type="number" name="ros_domain_id" id="ros_domain_id" value="101">
+                <input type="button" value="接続" id="connect">
+            </div>   
+        </div>
+        <div class="g-margin">
+            <p>これはテストページです</p>
+            <p><img src="NO SIGNAL.png" id="ros_image"/></p>
+        </div>
         <script type="text/javascript" src="script.js"></script>
         <script type="text/javascript" src="app.js"></script>
     </body>

@@ -1,3 +1,77 @@
+body {
+    margin: 0px;
+}
+
+label {
+    vertical-align: middle;
+}
+
+input {
+    box-sizing: content-box;
+    height: 20px;
+    vertical-align: middle;
+}
+
+select {
+    box-sizing: content-box;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.title-bar {
+    background-color: #006E47;
+    display: flex;
+    flex-wrap: wrap;
+    color: white;
+}
+
+.g-margin {
+    margin: 8px;
+}
+
+.g-padding {
+    padding: 8px;
+}
+
+.g-end {
+    margin: auto 0 0 0;
+    padding-left: 8px;
+    padding-top: 8px;
+    padding-bottom: 14px;
+    padding-right: 0px;
+}
+
 .title {
+    font-size: 32px;
+    font-weight: bold;
     text-align: center;
+    width: 260px;
+}
+
+.ip-input {
+    font-size: 12px;
+    margin: auto 0 auto 0;
+    width: 400px;
+    vertical-align: middle;
+}
+
+.status {
+    font-size: 12px;
+    margin: auto;
+}
+
+#ip {
+    width: 100px;
+}
+
+#port {
+    width: 50px;
+}
+
+#ros_domain_id {
+    width: 40px;
+}
+
+.connect {
+    align-items: center;
 }
