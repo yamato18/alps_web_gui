@@ -30,6 +30,7 @@ const connectROS = () => {
         const status = document.getElementById("status");
         status.textContent = `🔴【ROS接続状況】エラー（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("Error: ", error);
+        alert("Error: ", error);
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
     
@@ -46,6 +47,5 @@ window.addEventListener("load", () => {
 });
 
 document.getElementById("connect").addEventListener("click", () => {
-    alert("「接続」が押されました");
     connectROS();
 });
