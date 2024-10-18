@@ -28,6 +28,12 @@ const connectROS = () => {
     const material = new THREE.PointsMaterial({ vertexColors: true });
     const pointCloud = new THREE.Points(geometry, material);
     scene.add(pointCloud);
+
+    const animate = () => {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    };
     
     ros.on("connection", () => {
         const status = document.getElementById("status");
@@ -78,12 +84,6 @@ const connectROS = () => {
             geometry.attributes.position.needUpdate = true;
             geometry.attributes.color.needUpdate = true;
         });
-
-        const animate = () => {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        };
 
         animate();
     });
