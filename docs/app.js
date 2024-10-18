@@ -1,5 +1,3 @@
-import * as THREE from "three.module.min.js";
-
 const connectROS = () => {
     // roslib.js
     const protocol = document.getElementById("protocol").value;
