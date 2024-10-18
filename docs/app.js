@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 const connectROS = () => {
     // roslib.js
     const protocol = document.getElementById("protocol").value;
