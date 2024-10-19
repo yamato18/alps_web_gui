@@ -1,9 +1,13 @@
 // バージョン
 <<<<<<< HEAD
+<<<<<<< HEAD
 const VERSION = "0.4.14"
 =======
 const VERSION = "0.5.10"
 >>>>>>> parent of 8fd405e (NPMでインストール)
+=======
+const VERSION = "0.5.11"
+>>>>>>> 8fd405e062a21ef59d0ab1c42dfe16bd1dee0e9c
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
