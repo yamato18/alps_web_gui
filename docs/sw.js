@@ -1,5 +1,9 @@
 // バージョン
+<<<<<<< HEAD
 const VERSION = "0.4.14"
+=======
+const VERSION = "0.5.10"
+>>>>>>> parent of 8fd405e (NPMでインストール)
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -11,6 +15,7 @@ const CACHE_FILES = [
     "script.js",
     "app.js",
     "roslib.min.js",
+    "three.min.js",
     "tier4-roslibjs-foxglove-0.0.4-bundle.js",
 	"manifest.json",
 	"icons/apple-touch-icon.png",
