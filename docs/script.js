@@ -46,6 +46,7 @@ info.addEventListener("click", () => {
 
 const notice = document.getElementById("notice");
 notice.addEventListener("click", () => {
+    console.log("ボタンクリック確認用");
     if (!("Notification" in window)) {
         alert("【ERROR】\nこのブラウザは通知に対応していません。");
     } else if (Notification.permission === "granted") {
