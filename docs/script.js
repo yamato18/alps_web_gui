@@ -38,3 +38,29 @@ if ("serviceWorker" in navigator) {
 } else {
     console.error("ServiceWorkers are not supported.");
 }
+
+const info = document.getElementById("info");
+info.addEventListener("click", () => {
+    alert("E-Mail: yamato151008@gmail.com\nCopyright © 2024 Shirahata Yamato All Rights Reserved.");
+});
+
+const notice = document.getElementById("notice");
+notice.addEventListener("click", () => {
+    if (!("Notification" in window)) {
+        alert("【ERROR】\nこのブラウザは通知に対応していません。");
+    } else if (Notification.permission === "granted") {
+        alert("【INFO】\n通知は許可されています。");
+    } else if (Notification.permission === "denied") {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "denied") {
+                alert("【ERROR】\n通知は許可されませんでした。");
+            } else if (permission === "granted") {
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification("【INFO】", {
+                        body: "通知が許可されました。",
+                    });
+                });
+            }
+        });
+    }
+});

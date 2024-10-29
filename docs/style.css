@@ -75,3 +75,17 @@ select {
 .connect {
     align-items: center;
 }
+
+.mpart {
+    border-width: 0;
+    height: 2px;
+    background-color: #000;
+    content: "";
+    display: block;
+}
+
+/* @media (prefers-color-scheme: dark) {
+    .mpart {
+        background-color: #fff;
+    }
+} */
