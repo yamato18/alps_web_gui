@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.5.15"
+const VERSION = "0.5.16"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -12,6 +12,7 @@ const CACHE_FILES = [
     "app.js",
     "roslib.min.js",
     "three.module.min.js",
+    "OrbitControls.js",
     "tier4-roslibjs-foxglove-0.0.4-bundle.js",
 	"manifest.json",
 	"icons/apple-touch-icon.png",

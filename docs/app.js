@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "OrbitControls";
 
 const connectROS = () => {
     // roslib.js
@@ -24,7 +25,7 @@ const connectROS = () => {
 
     camera.position.set(0, 0, 5);
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
 
     const geometry = new THREE.BufferGeometry();
     const material = new THREE.PointsMaterial({ vertexColors: true });
