@@ -1,4 +1,4 @@
-import * as THREE from "./three.module.min.js";
+import * as THREE from "three";
 
 const connectROS = () => {
     // roslib.js

@@ -10,8 +10,12 @@
         <link rel="stylesheet" href="style.css">
         <link rel="manifest" href="manifest.json">
         <script type="text/javascript" src="roslib.min.js"></script>
-        <script type="module">
-            import * as THREE from "./three.module.min.js";
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "./three.module.min.js"
+                }
+            }
         </script>
         <!-- <script type="module" src="tier4-roslibjs-foxglove-0.0.4-bundle.js"></script> -->
     </head>
@@ -40,6 +44,6 @@
             <div><canvas id="pointcloud"></canvas></div>
         </div>
         <script type="text/javascript" src="script.js"></script>
-        <script type="text/javascript" src="app.js"></script>
+        <script type="module" src="app.js"></script>
     </body>
 </html>
