@@ -101,7 +101,7 @@ select {
     font-size: 24px;
 }
 @media (max-width: 750px) {
-    .ctrl-field {
+    .cd-field {
         font-size: 12px;
     }
 }
