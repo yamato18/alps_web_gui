@@ -102,7 +102,7 @@ select {
 }
 @media (max-width: 750px) {
     .cd-field {
-        font-size: 16px;
+        font-size: 20px;
     }
 }
 
@@ -113,7 +113,7 @@ select {
 }
 @media (max-width: 750px) {
     .ctrl-btn {
-        font-size: 36px;
+        font-size: 40px;
         width: 60%;
     }
 }
