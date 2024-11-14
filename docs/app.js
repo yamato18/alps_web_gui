@@ -88,7 +88,8 @@ document.getElementById("connect_R2").addEventListener("click", () => {
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
     const rect = img.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = Math.ceil(event.clientX - rect.left);
+    const y = Math.ceil(event.clientY - rect.top);
+    document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
     console.log("x: ", x, " Y: ", y);
 });

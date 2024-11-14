@@ -15,13 +15,34 @@
 </head>
 
 <body>
+    <!-- タイトルバー -->
     <div class="title-bar">
         <div class="title g-padding">ALPS Web GUI</div>
         <div id="sw-version" class="g-end">Ver. N/A</div>
         <div id="status" class="g-padding">🟡【ROS接続状況】未接続（wss://localhost:9090 ID=10）</div>
     </div>
+
     <div class="g-margin">
-        <p><img src="NO SIGNAL.png" id="ros_image" /></p>
+        <!-- コントローラ部分 -->
+        <div class="ctrl">
+            <div class="img-field">
+                <img src="NO SIGNAL.png" id="ros_image" class="img" />
+            </div>
+            <div class="ctrl-btns">
+                <div class="cd-field">
+                    <div id="cd-status">【状態】PointCloud未取得</div>
+                    <div id="cd-xy">【座標】（x, y）</div>
+                </div>
+                <div class="inj-btn-field">
+                    <input type="button" value="射出" id="inj-btn" class="ctrl-btn">
+                </div>
+                <div class="rcv-btn-field">
+                    <input type="button" value="復旧" id="rcv-btn" class="ctrl-btn">
+                </div>
+            </div>
+        </div>
+
+        <!-- 設定部分 -->
         <div id="line">
             <hr class="mpart">
         </div>

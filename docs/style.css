@@ -3,6 +3,18 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+img {
+    width: 640px;
+    height: 480px;
+    
+}
+@media (max-width: 750px) {
+    img {
+        width: 320px;
+        height: 240px;
+    }
+}
+
 label {
     vertical-align: middle;
 }
@@ -53,6 +65,48 @@ select {
     width: 260px;
 }
 
+.ctrl {
+    display: flex;
+    flex-direction: row;
+}
+@media (max-width: 750px) {
+    .ctrl {
+        flex-direction: column;
+    }
+}
+
+.img-field {
+    text-align: center;
+}
+
+.ctrl-btns {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-left: 10px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 750px) {
+    .ctrl-btns {
+        grid-template-rows: 80px 80px 80px;
+        margin-left: 0px;
+    }
+}
+
+.cd-field {
+    font-size: 20px;
+}
+
+.ctrl-btn {
+    font-size: 48px;
+    width: 90%;
+    height: 90%;
+}
+
 .ip-input {
     font-size: 12px;
     margin: auto 0 auto 0;
@@ -67,7 +121,8 @@ select {
 #ip {
     width: 100px;
 }
-@media (max-width: 750px){
+
+@media (max-width: 750px) {
     #ip {
         width: 90px;
     }
@@ -76,7 +131,8 @@ select {
 #port {
     width: 50px;
 }
-@media (max-width: 750px){
+
+@media (max-width: 750px) {
     #port {
         width: 30px;
     }
@@ -85,7 +141,8 @@ select {
 #ros_domain_id {
     width: 40px;
 }
-@media (max-width: 750px){
+
+@media (max-width: 750px) {
     #ros_domain_id {
         width: 30px;
     }
