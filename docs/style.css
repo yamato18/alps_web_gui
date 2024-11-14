@@ -83,8 +83,8 @@ select {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-left: 10px;
+    gap: 5px;
+    margin-left: 5px;
     width: 100%;
     text-align: center;
     justify-content: center;
@@ -93,7 +93,7 @@ select {
 @media (max-width: 750px) {
     .ctrl-btns {
         grid-template-rows: 80px 80px 80px;
-        margin-left: 0px;
+        margin-left: 0;
     }
 }
 
@@ -102,7 +102,7 @@ select {
 }
 @media (max-width: 750px) {
     .ctrl-field {
-        font-size: 16px;
+        font-size: 12px;
     }
 }
 
@@ -113,7 +113,7 @@ select {
 }
 @media (max-width: 750px) {
     .ctrl-btn {
-        font-size: 40px;
+        font-size: 24px;
     }
 }
 
