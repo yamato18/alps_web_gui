@@ -18,7 +18,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // CompressedImage型
         const image = new ROSLIB.Topic({
             ros: ros,
-            name: "/image_raw/compressed",
+            name: "/camera/rgb/image_raw/compressed",
             messageType: "sensor_msgs/msg/CompressedImage"
         });
 
