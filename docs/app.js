@@ -63,17 +63,25 @@ document.getElementById("connect").addEventListener("click", () => {
 
 document.getElementById("connect_R1").addEventListener("click", () => {
     const protocol = "wss";
+    document.getElementById("protocol").value = protocol;
     const ip = "192.168.11.10";
+    document.getElementById("ip").value = ip;
     const port = "9090";
+    document.getElementById("port").value = port;
     const ros_domain_id = "10";
+    document.getElementById("ros_domain_id").value = ros_domain_id;
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
 document.getElementById("connect_R2").addEventListener("click", () => {
     const protocol = "wss";
+    document.getElementById("protocol").value = protocol;
     const ip = "192.168.11.20";
+    document.getElementById("ip").value = ip;
     const port = "9090";
+    document.getElementById("port").value = port;
     const ros_domain_id = "20";
+    document.getElementById("ros_domain_id").value = ros_domain_id;
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
