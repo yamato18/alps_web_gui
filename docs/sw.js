@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.5.12"
+const VERSION = "0.8.1"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -11,8 +11,6 @@ const CACHE_FILES = [
     "script.js",
     "app.js",
     "roslib.min.js",
-    "three.min.js",
-    "tier4-roslibjs-foxglove-0.0.4-bundle.js",
 	"manifest.json",
 	"icons/apple-touch-icon.png",
     "icons/icon.svg",
@@ -76,6 +74,8 @@ self.addEventListener("fetch", (event) => {
 
 // バージョン送信
 self.addEventListener("message", (event) => {
+    console.log(event);
+    
     if (event.data && event.data.type === "GET_VERSION") {
         event.source.postMessage({ type: "VERSION", version: VERSION });
     }

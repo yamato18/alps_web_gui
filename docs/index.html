@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
-		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-		<link rel="icon" href="icons/favicon.ico">
-        <title>ALPS Web GUI</title>
-        <link rel="stylesheet" href="style.css">
-        <link rel="manifest" href="manifest.json">
-        <script type="text/javascript" src="roslib.min.js"></script>
-        <script type="module" src="three.min.js"></script>
-        <!-- <script type="module" src="tier4-roslibjs-foxglove-0.0.4-bundle.js"></script> -->
-    </head>
-    <body>
-        <div class="title-bar">
-            <div class="title g-padding">ALPS Web GUI</div>
-            <div id="sw-version" class="g-end">Ver. N/A</div>
-            <div id="status" class="g-padding">🟡【ROS接続状況】未接続（ws://localhost:9090 ID=10）</div>
-            <div class="ip-input g-padding">
-                <select name="protocol" id="protocol">
-                    <option value="ws">ws://</option>
-                    <option value="wss" selected>wss://</option>
-                </select>
-                <label for="ip">IP: </label>
-                <input type="text" id="ip" value="localhost">
-                <label for="port">Port: </label>
-                <input type="number" name="port" id="port" value="9090">
-                <label for="ros_domain_id">ID: </label>
-                <input type="number" name="ros_domain_id" id="ros_domain_id" value="10">
-                <input type="button" value="接続" id="connect">
-            </div>   
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>ALPS Web GUI</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" href="icons/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <script type="text/javascript" src="roslib.min.js"></script>
+</head>
+
+<body>
+    <div class="title-bar">
+        <div class="title g-padding">ALPS Web GUI</div>
+        <div id="sw-version" class="g-end">Ver. N/A</div>
+        <div id="status" class="g-padding">🟡【ROS接続状況】未接続（ws://localhost:9090 ID=10）</div>
+    </div>
+    <div class="g-margin">
+        <p>これはテストページです</p>
+        <p><img src="NO SIGNAL.png" id="ros_image" /></p>
+        <div id="line">
+            <hr class="mpart">
         </div>
-        <div class="g-margin">
-            <p>これはテストページです</p>
-            <p><img src="NO SIGNAL.png" id="ros_image"/></p>
-            <div><canvas id="pointcloud"></canvas></div>
+        <div class="ip-input g-padding">
+            <select name="protocol" id="protocol">
+                <option value="ws">ws://</option>
+                <option value="wss" selected>wss://</option>
+            </select>
+            <label for="ip">IP: </label>
+            <input type="text" id="ip" value="localhost">
+            <label for="port">Port: </label>
+            <input type="number" name="port" id="port" value="9090">
+            <label for="ros_domain_id">ID: </label>
+            <input type="number" name="ros_domain_id" id="ros_domain_id" value="10">
+            <input type="button" value="接続" id="connect">
+            <input type="button" value="情報" id="info" class="set">
+            <input type="button" value="通知" id="notice" class="set">
         </div>
-        <script type="text/javascript" src="script.js"></script>
-        <script type="text/javascript" src="app.js"></script>
-    </body>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+
 </html>
