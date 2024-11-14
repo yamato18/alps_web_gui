@@ -100,23 +100,23 @@ select {
 .cd-field {
     font-size: 24px;
 }
-/* @media (max-width: 750px) {
+@media (max-width: 750px) {
     .cd-field {
         font-size: 12px;
     }
-} */
+}
 
 .ctrl-btn {
     font-size: 48px;
     width: 90%;
     height: 90%;
 }
-/* @media (max-width: 750px) {
+@media (max-width: 750px) {
     .ctrl-btn {
         font-size: 24px;
         width: 60%;
     }
-} */
+}
 
 .ip-input {
     font-size: 12px;
