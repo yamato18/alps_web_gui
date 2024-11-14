@@ -85,6 +85,7 @@ document.getElementById("connect_R2").addEventListener("click", () => {
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
+const img_field = document.getElementById("img-field");
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
     const rect = img.getBoundingClientRect();
@@ -92,4 +93,18 @@ img.addEventListener("click", (event) => {
     const y = Math.ceil(event.clientY - rect.top);
     document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
     console.log("x: ", x, " Y: ", y);
+
+    // マーカー作成
+    const marker = document.createElement("div");
+    marker.className = "marker";
+    marker.style.left = `${x}-5px`;
+    marker.style.top = `${y}-5px`;
+
+    // マーカー削除
+    const existMarkers = img_field.getElementsByClassName("marker");
+    while (existMarkers.length > 0) {
+        existMarkers[0].remove();
+    }
+
+    img_field.appendChild("marker");
 });
