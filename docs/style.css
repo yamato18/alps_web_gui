@@ -65,15 +65,30 @@ select {
 }
 
 #ip {
-    width: 90px;
+    width: 100px;
+}
+@media (max-width: 750px){
+    #ip {
+        width: 90px;
+    }
 }
 
 #port {
-    width: 30px;
+    width: 50px;
+}
+@media (max-width: 750px){
+    #port {
+        width: 30px;
+    }
 }
 
 #ros_domain_id {
-    width: 30px;
+    width: 40px;
+}
+@media (max-width: 750px){
+    #ros_domain_id {
+        width: 30px;
+    }
 }
 
 .connect {
