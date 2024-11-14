@@ -83,8 +83,8 @@ select {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    gap: 5px;
-    margin-left: 5px;
+    gap: 10px;
+    margin-left: 10px;
     width: 100%;
     text-align: center;
     justify-content: center;
