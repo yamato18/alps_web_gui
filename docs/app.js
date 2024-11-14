@@ -88,8 +88,11 @@ document.getElementById("connect_R2").addEventListener("click", () => {
 const img_field = document.getElementById("img-field");
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
-    const x = Math.ceil(event.clientX);
-    const y = Math.ceil(event.clientY);
+    const rect = img.getBoundingClientRect();
+    const ax = Math.ceil(event.clientX);
+    const ay = Math.ceil(event.clientY);
+    const x = ax - rect.left;
+    const y = ay - rect.top;
     document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
     console.log("x: ", x, " Y: ", y);
 
@@ -102,7 +105,7 @@ img.addEventListener("click", (event) => {
     // マーカー作成
     const marker = document.createElement("div");
     marker.className = "marker";
-    marker.style.left = `${x - 5}px`;
-    marker.style.top = `${y - 5}px`;
+    marker.style.left = `${ax - 5}px`;
+    marker.style.top = `${ay - 5}px`;
     img_field.appendChild(marker);
 });
