@@ -1,10 +1,9 @@
-const connectROS = () => {
-    // roslib.js
-    const protocol = document.getElementById("protocol").value;
-    const ip = document.getElementById("ip").value;
-    const port = document.getElementById("port").value;
-    const ros_domain_id = document.getElementById("ros_domain_id").value;
+const connectROS = (protocol, ip, port, ros_domain_id) => {
 
+    console.log(typeof(ip));
+    
+
+    // roslib.js
     const ros = new ROSLIB.Ros({
         url: `${protocol}://${ip}:${port}`,
         options: {
@@ -47,11 +46,35 @@ const connectROS = () => {
 }
 
 window.addEventListener("load", () => {
-    connectROS();
+    const protocol = document.getElementById("protocol").value;
+    const ip = document.getElementById("ip").value;
+    const port = document.getElementById("port").value;
+    const ros_domain_id = document.getElementById("ros_domain_id").value;
+    connectROS(protocol, ip, port, ros_domain_id);
 });
 
 document.getElementById("connect").addEventListener("click", () => {
-    connectROS();
+    const protocol = document.getElementById("protocol").value;
+    const ip = document.getElementById("ip").value;
+    const port = document.getElementById("port").value;
+    const ros_domain_id = document.getElementById("ros_domain_id").value;
+    connectROS(protocol, ip, port, ros_domain_id);
+});
+
+document.getElementById("connect_R1").addEventListener("click", () => {
+    const protocol = "wss";
+    const ip = "192.168.11.10";
+    const port = "9090";
+    const ros_domain_id = "10";
+    connectROS(protocol, ip, port, ros_domain_id);
+});
+
+document.getElementById("connect_R2").addEventListener("click", () => {
+    const protocol = "wss";
+    const ip = "192.168.11.20";
+    const port = "9090";
+    const ros_domain_id = "20";
+    connectROS(protocol, ip, port, ros_domain_id);
 });
 
 const img = document.getElementById("ros_image");
