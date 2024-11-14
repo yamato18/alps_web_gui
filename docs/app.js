@@ -26,8 +26,6 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             const data = "data:image/png;base64," + message.data;
             document.getElementById("ros_image").setAttribute("src", data);
         });
-
-        animate();
     });
     
     ros.on("error", (error) => {
@@ -89,12 +87,11 @@ const img_field = document.getElementById("img-field");
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
     const rect = img.getBoundingClientRect();
-    const ax = Math.ceil(event.clientX);
-    const ay = Math.ceil(event.clientY);
-    const x = ax - rect.left;
-    const y = ay - rect.top;
+    const ax = Math.ceil(event.clientX) + 1;
+    const ay = Math.ceil(event.clientY) + 1;
+    const x = ax - Math.ceil(rect.left);
+    const y = ay - Math.ceil(rect.top);
     document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
-    console.log("x: ", x, " Y: ", y);
 
     // マーカー削除
     const existMarkers = img_field.getElementsByClassName("marker");
