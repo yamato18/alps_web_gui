@@ -46,24 +46,24 @@ info.addEventListener("click", () => {
 
 const notice = document.getElementById("notice");
 notice.addEventListener("click", () => {
-    alert("E-Mail: yamato151008<at>gmail.com\nCopyright © 2024 Shirahata Yamato All Rights Reserved.");
     console.log("test");
     
-    // if (!("Notification" in window)) {
-    //     alert("【ERROR】\nこのブラウザは通知に対応していません。");
-    // } else if (Notification.permission === "granted") {
-    //     alert("【INFO】\n通知は許可されています。");
-    // } else if (Notification.permission === "denied") {
-    //     Notification.requestPermission().then((permission) => {
-    //         if (permission === "denied") {
-    //             alert("【ERROR】\n通知は許可されませんでした。");
-    //         } else if (permission === "granted") {
-    //             navigator.serviceWorker.ready.then((registration) => {
-    //                 registration.showNotification("【INFO】", {
-    //                     body: "通知が許可されました。",
-    //                 });
-    //             });
-    //         }
-    //     });
-    // }
+    if (!("Notification" in window)) {
+        alert("【ERROR】\nこのブラウザは通知に対応していません。");
+    } else if (Notification.permission === "granted") {
+        alert("【INFO】\n通知は許可されています。");
+    } else if (Notification.permission === "denied") {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "denied") {
+                alert("【ERROR】\n通知は許可されませんでした。");
+            } else if (permission === "granted") {
+                alert("成功");
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification("【INFO】", {
+                        body: "通知が許可されました。",
+                    });
+                });
+            }
+        });
+    }
 });
