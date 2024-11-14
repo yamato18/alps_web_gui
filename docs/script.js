@@ -52,7 +52,7 @@ notice.addEventListener("click", () => {
         alert("【ERROR】\nこのブラウザは通知に対応していません。");
     } else if (Notification.permission === "granted") {
         alert("【INFO】\n通知は許可されています。");
-    } else if (Notification.permission === "denied") {
+    } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
             if (permission === "denied") {
                 alert("【ERROR】\n通知は許可されませんでした。");
