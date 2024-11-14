@@ -53,3 +53,11 @@ window.addEventListener("load", () => {
 document.getElementById("connect").addEventListener("click", () => {
     connectROS();
 });
+
+const img = document.getElementById("ros_image");
+img.addEventListener("click", (event) => {
+    const rect = img.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    console.log("x: ", x, " Y: ", y);
+});
