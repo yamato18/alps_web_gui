@@ -88,23 +88,21 @@ document.getElementById("connect_R2").addEventListener("click", () => {
 const img_field = document.getElementById("img-field");
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
-    const rect = img.getBoundingClientRect();
-    const x = Math.ceil(event.clientX - rect.left);
-    const y = Math.ceil(event.clientY - rect.top);
+    const x = Math.ceil(event.clientX);
+    const y = Math.ceil(event.clientY);
     document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
     console.log("x: ", x, " Y: ", y);
+
+    // マーカー削除
+    const existMarkers = img_field.getElementsByClassName("marker");
+    while (0 < existMarkers.length) {
+        existMarkers[0].remove();
+    }
 
     // マーカー作成
     const marker = document.createElement("div");
     marker.className = "marker";
-    marker.style.left = `${x}-5px`;
-    marker.style.top = `${y}-5px`;
-
-    // マーカー削除
-    const existMarkers = img_field.getElementsByClassName("marker");
-    while (existMarkers.length > 0) {
-        existMarkers[0].remove();
-    }
-
-    img_field.appendChild("marker");
+    marker.style.left = `${x - 5}px`;
+    marker.style.top = `${y - 5}px`;
+    img_field.appendChild(marker);
 });
