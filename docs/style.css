@@ -98,12 +98,11 @@ select {
 }
 
 .cd-field {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .ctrl-btn {
-    font-size: 48px;
-    max-width: 100%;
+    font-size: 40px;
     width: 90%;
     height: 90%;
 }
