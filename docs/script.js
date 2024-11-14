@@ -46,7 +46,7 @@ info.addEventListener("click", () => {
 
 const notice = document.getElementById("notice");
 notice.addEventListener("click", () => {
-    alert("E-Mail: yamato151008@gmail.com\nCopyright © 2024 Shirahata Yamato All Rights Reserved.");
+    alert("E-Mail: yamato151008<at>gmail.com\nCopyright © 2024 Shirahata Yamato All Rights Reserved.");
     console.log("test");
     
     // if (!("Notification" in window)) {
