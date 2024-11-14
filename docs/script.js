@@ -13,7 +13,7 @@ if ("serviceWorker" in navigator) {
                                 if (event.data && event.data.type === "VERSION") {
                                     const newVersion = event.data.version;
                                     document.getElementById("sw-version").textContent = `Ver. ${newVersion}`;
-                                    alert(`【アップデート Ver. ${newVersion}】\nWebアプリが更新されました。アプリを再起動してください。\niOS端末など一部の環境では更新が正しく適用されない場合があります。Webアプリを一度削除し、キャッシュの削除などを実行の上で再度インストールしてください。`);
+                                    alert(`【アップデート Ver. ${newVersion}】\nWebアプリが更新されました。アプリを再起動してください。\n一部の環境では更新が正しく適用されない場合があります。Webアプリを一度削除し、キャッシュの削除を実行の上で再度インストールしてください。`);
                                 }
                             });
                         }
