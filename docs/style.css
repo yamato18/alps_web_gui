@@ -69,7 +69,7 @@ select {
     display: flex;
     flex-direction: row;
 }
-@media (max-width: 750px) {
+@media (max-width: 600px) {
     .ctrl {
         flex-direction: column;
     }
@@ -92,7 +92,7 @@ select {
 }
 @media (max-width: 750px) {
     .ctrl-btns {
-        grid-template-rows: 80px 80px 80px;
+        grid-template-rows: 60px 60px 60px;
         margin-left: 0;
     }
 }
@@ -131,7 +131,6 @@ select {
 #ip {
     width: 100px;
 }
-
 @media (max-width: 750px) {
     #ip {
         width: 90px;
@@ -141,7 +140,6 @@ select {
 #port {
     width: 50px;
 }
-
 @media (max-width: 750px) {
     #port {
         width: 30px;
@@ -151,7 +149,6 @@ select {
 #ros_domain_id {
     width: 40px;
 }
-
 @media (max-width: 750px) {
     #ros_domain_id {
         width: 30px;
