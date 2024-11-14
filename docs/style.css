@@ -69,7 +69,7 @@ select {
     display: flex;
     flex-direction: row;
 }
-@media (max-width: 750px) {
+@media (max-width: 600px) {
     .ctrl {
         flex-direction: column;
     }
@@ -90,7 +90,7 @@ select {
     justify-content: center;
     align-items: center;
 }
-@media (max-width: 750px) {
+@media (max-width: 600px) {
     .ctrl-btns {
         grid-template-rows: 80px 80px 80px;
         margin-left: 0px;
@@ -103,6 +103,7 @@ select {
 
 .ctrl-btn {
     font-size: 48px;
+    max-width: 100%;
     width: 90%;
     height: 90%;
 }
