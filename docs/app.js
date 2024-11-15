@@ -1,8 +1,5 @@
 const connectROS = (protocol, ip, port, ros_domain_id) => {
-
-    console.log(typeof(ip));
     
-
     // roslib.js
     const ros = new ROSLIB.Ros({
         url: `${protocol}://${ip}:${port}`,
@@ -98,14 +95,12 @@ img.addEventListener("click", (event) => {
     while (0 < existMarkers.length) {
         existMarkers[0].remove();
     }
-
-    console.log(Math.round(window.scrollX), Math.round(window.scrollY));
     
-
     // マーカー作成
-    const marker = document.createElement("div");
+    const marker = document.createElement("img");
     marker.className = "marker";
-    marker.style.left = `${ax + Math.round(window.scrollX) - 5}px`;
-    marker.style.top = `${ay + Math.round(window.scrollY) - 5}px`;
+    marker.src = "./marker.png";
+    marker.style.left = `${ax + Math.round(window.scrollX) - 40}px`;
+    marker.style.top = `${ay + Math.round(window.scrollY) - 40}px`;
     img_field.appendChild(marker);
 });
