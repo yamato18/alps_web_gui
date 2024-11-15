@@ -87,10 +87,10 @@ const img_field = document.getElementById("img-field");
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
     const rect = img.getBoundingClientRect();
-    const ax = Math.ceil(event.clientX) + 1;
-    const ay = Math.ceil(event.clientY) + 1;
-    const x = ax - Math.ceil(rect.left);
-    const y = ay - Math.ceil(rect.top);
+    const ax = Math.round(event.clientX) + 1;
+    const ay = Math.round(event.clientY) + 1;
+    const x = ax - Math.round(rect.left);
+    const y = ay - Math.round(rect.top);
     document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
 
     // マーカー削除
@@ -99,10 +99,13 @@ img.addEventListener("click", (event) => {
         existMarkers[0].remove();
     }
 
+    console.log(Math.round(window.scrollX), Math.round(window.scrollY));
+    
+
     // マーカー作成
     const marker = document.createElement("div");
     marker.className = "marker";
-    marker.style.left = `${ax - 5}px`;
-    marker.style.top = `${ay - 5}px`;
+    marker.style.left = `${ax + Math.round(window.scrollX) - 5}px`;
+    marker.style.top = `${ay + Math.round(window.scrollY) - 5}px`;
     img_field.appendChild(marker);
 });
