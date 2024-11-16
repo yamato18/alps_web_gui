@@ -11,7 +11,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     ros.on("connection", () => {
         const status = document.getElementById("status");
         status.textContent = `🟢【ROS接続状況】接続済（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
-        
+        console.log("【INFO】Connected");
+
         // CompressedImage型
         const image = new ROSLIB.Topic({
             ros: ros,
@@ -23,19 +24,21 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             const data = "data:image/png;base64," + message.data;
             document.getElementById("ros_image").setAttribute("src", data);
         });
+
+
     });
     
     ros.on("error", (error) => {
         const status = document.getElementById("status");
         status.textContent = `🔴【ROS接続状況】エラー（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
-        console.log("Error: ", error);
+        console.log("【ERROR】", error);
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
     
     ros.on("close", () => {
         const status = document.getElementById("status");
         status.textContent = `🟡【ROS接続状況】未接続（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
-        console.log("Closed");
+        console.log("【INFO】Connection closed");
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
 }
@@ -81,20 +84,34 @@ document.getElementById("connect_R2").addEventListener("click", () => {
 });
 
 const img_field = document.getElementById("img-field");
+const removeMarker = () => {
+    const existMarkers = img_field.getElementsByClassName("marker");
+    while (0 < existMarkers.length) {
+        existMarkers[0].remove();
+    }
+}
+
 const img = document.getElementById("ros_image");
 img.addEventListener("click", (event) => {
     const rect = img.getBoundingClientRect();
     const ax = Math.round(event.clientX) + 1;
     const ay = Math.round(event.clientY) + 1;
-    const x = ax - Math.round(rect.left);
-    const y = ay - Math.round(rect.top);
+    let x, y;
+    if (rect.width == 320) {
+        x = 2 * (ax - Math.round(rect.left));
+    } else {
+        x = ax - Math.round(rect.left);
+    }
+    if (rect.height == 240) {
+        y = 2 * (ay - Math.round(rect.top));
+    } else {
+        y = ay - Math.round(rect.top);
+    }
+    
     document.getElementById("cd-xy").textContent = "【座標】（" + x + ", " + y + "）";
 
     // マーカー削除
-    const existMarkers = img_field.getElementsByClassName("marker");
-    while (0 < existMarkers.length) {
-        existMarkers[0].remove();
-    }
+    removeMarker();
     
     // マーカー作成
     const marker = document.createElement("img");
@@ -103,4 +120,11 @@ img.addEventListener("click", (event) => {
     marker.style.left = `${ax + Math.round(window.scrollX) - 40}px`;
     marker.style.top = `${ay + Math.round(window.scrollY) - 40}px`;
     img_field.appendChild(marker);
+});
+
+document.getElementById("rcv-btn").addEventListener("click", () => {
+    console.log("復旧");
+    
+    document.getElementById("cd-xy").textContent = "【座標】（x, y）";
+    removeMarker();
 });
