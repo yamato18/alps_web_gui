@@ -122,6 +122,11 @@ img.addEventListener("click", (event) => {
     img_field.appendChild(marker);
 });
 
+document.getElementById("inj-btn").addEventListener("click", () => {
+    console.log("射出");
+    
+});
+
 document.getElementById("rcv-btn").addEventListener("click", () => {
     console.log("復旧");
     
