@@ -92,7 +92,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("cd-status-t").textContent = "座標取得中";
         document.getElementById("cd-xy-x").textContent = x;
         document.getElementById("cd-xy-y").textContent = y;
-        document.getElementById("cd-xy-i").textContent = y * 640 + x;
+        const point_index = y * 640 + x;
+        document.getElementById("cd-xy-i").textContent = point_index;
 
         // マーカー削除
         removeMarker();
@@ -108,7 +109,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // ROS接続成功時に送信
         if (isConnected) {
             const point2d = new ROSLIB.Message({
-                point2d: point2d
+                point2d: point_index
             });
             pub_2d.publish(point2d);
 
