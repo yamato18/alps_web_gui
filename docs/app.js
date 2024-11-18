@@ -53,7 +53,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     const pub_2d = new ROSLIB.Topic({
         ros: ros,
         name: "/point2d",
-        messageType: "Point2D"
+        messageType: "web_gui_interfaces/Point2D"
     });
 
     // マーカー削除
