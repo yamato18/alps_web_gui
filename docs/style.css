@@ -6,7 +6,6 @@ body {
 img {
     width: 640px;
     height: 480px;
-    
 }
 @media (max-width: 750px) {
     img {
@@ -99,7 +98,7 @@ select {
 }
 @media (max-width: 750px) {
     .ctrl-btns {
-        grid-template-rows: 60px 60px 60px;
+        grid-template-rows: 120px 60px 60px;
         margin-left: 0;
     }
 }
