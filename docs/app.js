@@ -187,7 +187,7 @@ document.getElementById("connect_R2").addEventListener("click", () => {
 });
 
 // 「試験」押下時
-document.getElementById("connect_R2").addEventListener("click", () => {
+document.getElementById("connect_Test").addEventListener("click", () => {
     const protocol = "wss";
     document.getElementById("protocol").value = protocol;
     const ip = "dell-pc.local";
