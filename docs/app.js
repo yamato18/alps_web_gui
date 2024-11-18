@@ -111,9 +111,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 point2d: point2d
             });
             pub_2d.publish(point2d);
-        }
 
-        document.getElementById("cd-status-t").textContent = "座標計算中";
+            document.getElementById("cd-status-t").textContent = "座標計算中";
+        }
 
         // 射出ボタンEnabled
         document.getElementById("inj-btn").disabled = false;
