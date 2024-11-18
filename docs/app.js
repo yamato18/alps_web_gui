@@ -109,7 +109,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // ROS接続成功時に送信
         if (isConnected) {
             const point2d = new ROSLIB.Message({
-                point2d: point_index
+                index: point_index
             });
             pub_2d.publish(point2d);
 
