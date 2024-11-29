@@ -125,9 +125,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             });
             document.getElementById("cd-status-t").textContent = "座標計算中"; 
             getPoint3D.callService(request, (response) => {
-                document.getElementById("cd-xyz-x").textContent = response.xyz.x;
-                document.getElementById("cd-xyz-y").textContent = response.xyz.y;
-                document.getElementById("cd-xyz-z").textContent = response.xyz.z;
+                console.log(response);
+                
+                // document.getElementById("cd-xyz-x").textContent = response.xyz.x;
+                // document.getElementById("cd-xyz-y").textContent = response.xyz.y;
+                // document.getElementById("cd-xyz-z").textContent = response.xyz.z;
             });
             document.getElementById("cd-status-t").textContent = "座標表示中";  
         }
