@@ -56,13 +56,6 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         serviceType: "web_gui_interfaces/srv/GetPoint3D"
     });
 
-    // Point2D型
-    const pub_2d = new ROSLIB.Topic({
-        ros: ros,
-        name: "/point2d",
-        messageType: "web_gui_interfaces/Point2D"
-    });
-
     // マーカー削除
     const img_field = document.getElementById("img-field");
     const removeMarker = () => {
@@ -115,21 +108,19 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         // ROS接続成功時に送信
         if (isConnected) {
-            const point2d = new ROSLIB.Message({
-                index: point_index
-            });
-            pub_2d.publish(point2d);
-
+            document.getElementById("cd-status-t").textContent = "座標計算中";
             const request = new ROSLIB.ServiceRequest({
                 point2d: { index: point_index }
-            });
-            document.getElementById("cd-status-t").textContent = "座標計算中"; 
+            }); 
             getPoint3D.callService(request, (response) => {
-                console.log(response);
                 
-                // document.getElementById("cd-xyz-x").textContent = response.xyz.x;
-                // document.getElementById("cd-xyz-y").textContent = response.xyz.y;
-                // document.getElementById("cd-xyz-z").textContent = response.xyz.z;
+                document.getElementById("cd-xyz-x").textContent = response.point3d_xyz.x;
+                document.getElementById("cd-xyz-y").textContent = response.point3d_xyz.y;
+                document.getElementById("cd-xyz-z").textContent = response.point3d_xyz.z;
+
+                document.getElementById("cd-rtp-r").textContent = response.point3d_rtp.r;
+                document.getElementById("cd-rtp-t").textContent = response.point3d_rtp.t;
+                document.getElementById("cd-rtp-p").textContent = response.point3d_rtp.p;
             });
             document.getElementById("cd-status-t").textContent = "座標表示中";  
         }
