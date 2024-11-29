@@ -49,6 +49,13 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
 
+    // Serviceクライアント
+    const getPoint3D = new ROSLIB.Service({
+        ros: ros,
+        name: "/get_point3_d",
+        serviceType: "web_gui_interfaces/srv/GetPoint3D"
+    });
+
     // Point2D型
     const pub_2d = new ROSLIB.Topic({
         ros: ros,
@@ -113,7 +120,16 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             });
             pub_2d.publish(point2d);
 
-            document.getElementById("cd-status-t").textContent = "座標計算中";
+            const request = new ROSLIB.ServiceRequest({
+                point2d: { index: point_index }
+            });
+            document.getElementById("cd-status-t").textContent = "座標計算中"; 
+            getPoint3D.callService(request, (response) => {
+                document.getElementById("cd-xyz-x").textContent = response.xyz.x;
+                document.getElementById("cd-xyz-y").textContent = response.xyz.y;
+                document.getElementById("cd-xyz-z").textContent = response.xyz.z;
+            });
+            document.getElementById("cd-status-t").textContent = "座標表示中";  
         }
 
         // 射出ボタンEnabled
