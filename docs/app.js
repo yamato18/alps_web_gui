@@ -114,13 +114,13 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             }); 
             getPoint3D.callService(request, (response) => {
                 
-                document.getElementById("cd-xyz-x").textContent = response.point3d_xyz.x;
-                document.getElementById("cd-xyz-y").textContent = response.point3d_xyz.y;
-                document.getElementById("cd-xyz-z").textContent = response.point3d_xyz.z;
+                document.getElementById("cd-xyz-x").textContent = (response.point3d_xyz.x).toPrecision(3);
+                document.getElementById("cd-xyz-y").textContent = (response.point3d_xyz.y).toPrecision(3);
+                document.getElementById("cd-xyz-z").textContent = (response.point3d_xyz.z).toPrecision(3);
 
-                document.getElementById("cd-rtp-r").textContent = response.point3d_rtp.r;
-                document.getElementById("cd-rtp-t").textContent = response.point3d_rtp.t;
-                document.getElementById("cd-rtp-p").textContent = response.point3d_rtp.p;
+                document.getElementById("cd-rtp-r").textContent = (response.point3d_rtp.range).toPrecision(3);
+                document.getElementById("cd-rtp-t").textContent = (response.point3d_rtp.theta).toPrecision(3);
+                document.getElementById("cd-rtp-p").textContent = (response.point3d_rtp.phi).toPrecision(3);
             });
             document.getElementById("cd-status-t").textContent = "座標表示中";  
         }
