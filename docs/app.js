@@ -49,12 +49,16 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
 
+    const getPoint3D = null;
+
     // Serviceクライアント
-    const getPoint3D = new ROSLIB.Service({
-        ros: ros,
-        name: "/get_point3_d",
-        serviceType: "web_gui_interfaces/srv/GetPoint3D"
-    });
+    if (!getPoint3D) {
+        getPoint3D = new ROSLIB.Service({
+            ros: ros,
+            name: "/get_point3_d",
+            serviceType: "web_gui_interfaces/srv/GetPoint3D"
+        });
+    }; ß
 
     // マーカー削除
     const img_field = document.getElementById("img-field");
@@ -111,9 +115,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             document.getElementById("cd-status-t").textContent = "座標計算中";
             const request = new ROSLIB.ServiceRequest({
                 point2d: { index: point_index }
-            }); 
+            });
             getPoint3D.callService(request, (response) => {
-                
+
                 document.getElementById("cd-xyz-x").textContent = (response.point3d_xyz.x).toPrecision(3);
                 document.getElementById("cd-xyz-y").textContent = (response.point3d_xyz.y).toPrecision(3);
                 document.getElementById("cd-xyz-z").textContent = (response.point3d_xyz.z).toPrecision(3);
@@ -122,7 +126,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 document.getElementById("cd-rtp-t").textContent = (response.point3d_rtp.theta).toPrecision(3);
                 document.getElementById("cd-rtp-p").textContent = (response.point3d_rtp.phi).toPrecision(3);
             });
-            document.getElementById("cd-status-t").textContent = "座標表示中";  
+            document.getElementById("cd-status-t").textContent = "座標表示中";
         }
 
         // 射出ボタンEnabled
@@ -140,9 +144,18 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         console.log("復旧");
 
         document.getElementById("cd-status-t").textContent = "座標選択待機中";
+
         document.getElementById("cd-xy-x").textContent = "x";
         document.getElementById("cd-xy-y").textContent = "y";
         document.getElementById("cd-xy-i").textContent = "i";
+
+        document.getElementById("cd-xyz-x").textContent = "x";
+        document.getElementById("cd-xyz-y").textContent = "y";
+        document.getElementById("cd-xyz-z").textContent = "z";
+
+        document.getElementById("cd-rtp-r").textContent = "r";
+        document.getElementById("cd-rtp-t").textContent = "θ";
+        document.getElementById("cd-rtp-p").textContent = "φ";
 
         // マーカー削除
         removeMarker();
