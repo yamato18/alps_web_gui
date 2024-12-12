@@ -49,7 +49,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
 
-    const getPoint3D = null;
+    let getPoint3D = null;
 
     // Serviceクライアント
     if (!getPoint3D) {
@@ -58,7 +58,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             name: "/get_point3_d",
             serviceType: "web_gui_interfaces/srv/GetPoint3D"
         });
-    }; ß
+    };
 
     // マーカー削除
     const img_field = document.getElementById("img-field");
