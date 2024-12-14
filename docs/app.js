@@ -57,6 +57,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     });
     // ROS接続成功で購読開始
     ros_notification.subscribe((message) => {
+        console.log(message);
+        
         if (Notification.permission === "granted") {
             navigator.serviceWorker.ready.then((registration) => {
                 registration.showNotification(message.title, {
