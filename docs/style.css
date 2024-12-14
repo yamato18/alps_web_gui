@@ -104,6 +104,7 @@ select {
 }
 
 .cd-field {
+    text-align: left;
     font-size: 24px;
 }
 @media (max-width: 750px) {
