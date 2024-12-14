@@ -49,24 +49,24 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
     });
 
-    // // Notification型
-    // const ros_notification = new ROSLIB.Topic({
-    //     ros: ros,
-    //     name: "/Notification",
-    //     messageType: "web_gui_interfaces/msg/Notification"
-    // });
-    // // ROS接続成功で購読開始
-    // ros_notification.subscribe((message) => {
-    //     if (Notification.permission === "granted") {
-    //         navigator.serviceWorker.ready.then((registration) => {
-    //             registration.showNotification(message.title, {
-    //                 body: message.body,
-    //             });
-    //         });
-    //     } else {
-    //         alert(message.title + "\n" + message.body + "\n\n※通知を許可してください");
-    //     }
-    // });
+    // Notification型
+    const ros_notification = new ROSLIB.Topic({
+        ros: ros,
+        name: "/Notification",
+        messageType: "web_gui_interfaces/msg/Notification"
+    });
+    // ROS接続成功で購読開始
+    ros_notification.subscribe((message) => {
+        if (Notification.permission === "granted") {
+            navigator.serviceWorker.ready.then((registration) => {
+                registration.showNotification(message.title, {
+                    body: message.body,
+                });
+            });
+        } else {
+            alert(message.title + "\n" + message.body + "\n\n※通知を許可してください");
+        }
+    });
 
     let getPoint3D = null;
 
