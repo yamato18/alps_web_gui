@@ -29,6 +29,25 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             const data = "data:image/png;base64," + message.data;
             document.getElementById("ros_image").setAttribute("src", data);
         });
+
+        // Notification型
+        const ros_notification = new ROSLIB.Topic({
+            ros: ros,
+            name: "/Notification",
+            messageType: "web_gui_interfaces/msg/Notification"
+        });
+        // ROS接続成功で購読開始
+        ros_notification.subscribe((message) => {
+            if (Notification.permission === "granted") {
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification(message.title, {
+                        body: message.body,
+                    });
+                });
+            } else {
+                alert(message.title + "\n" + message.body + "\n\n※通知を許可してください");
+            }
+        });
     });
 
     // エラー発生時
@@ -117,14 +136,16 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 point2d: { index: point_index }
             });
             getPoint3D.callService(request, (response) => {
+                const xyz = response.point3d_xyz;
+                const rtp = response.point3d_rtp;
 
-                document.getElementById("cd-xyz-x").textContent = (response.point3d_xyz.x).toPrecision(3);
-                document.getElementById("cd-xyz-y").textContent = (response.point3d_xyz.y).toPrecision(3);
-                document.getElementById("cd-xyz-z").textContent = (response.point3d_xyz.z).toPrecision(3);
+                document.getElementById("cd-xyz-x").textContent = isNaN(xyz.x) ? xyz.x : parseFloat(xyz.x).toFixed(2);
+                document.getElementById("cd-xyz-y").textContent = isNaN(xyz.y) ? xyz.y : parseFloat(xyz.y).toFixed(2);
+                document.getElementById("cd-xyz-z").textContent = isNaN(xyz.z) ? xyz.z : parseFloat(xyz.z).toFixed(2);
 
-                document.getElementById("cd-rtp-r").textContent = (response.point3d_rtp.range).toPrecision(3);
-                document.getElementById("cd-rtp-t").textContent = (response.point3d_rtp.theta).toPrecision(3);
-                document.getElementById("cd-rtp-p").textContent = (response.point3d_rtp.phi).toPrecision(3);
+                document.getElementById("cd-rtp-r").textContent = isNaN(rtp.range) ? rtp.range : parseFloat(rtp.range).toFixed(2);
+                document.getElementById("cd-rtp-t").textContent = isNaN(rtp.theta) ? rtp.theta : parseFloat(rtp.theta).toFixed(2);
+                document.getElementById("cd-rtp-p").textContent = isNaN(rtp.phi) ? rtp.phi : parseFloat(rtp.phi).toFixed(2);
             });
             document.getElementById("cd-status-t").textContent = "座標表示中";
         }
@@ -187,7 +208,7 @@ document.getElementById("connect").addEventListener("click", () => {
 document.getElementById("connect_R1").addEventListener("click", () => {
     const protocol = "wss";
     document.getElementById("protocol").value = protocol;
-    const ip = "192.168.11.10";
+    const ip = "192.168.2.10";
     document.getElementById("ip").value = ip;
     const port = "9090";
     document.getElementById("port").value = port;
@@ -200,7 +221,7 @@ document.getElementById("connect_R1").addEventListener("click", () => {
 document.getElementById("connect_R2").addEventListener("click", () => {
     const protocol = "wss";
     document.getElementById("protocol").value = protocol;
-    const ip = "192.168.11.20";
+    const ip = "192.168.2.20";
     document.getElementById("ip").value = ip;
     const port = "9090";
     document.getElementById("port").value = port;
