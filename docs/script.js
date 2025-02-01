@@ -41,7 +41,7 @@ if ("serviceWorker" in navigator) {
 
 const info = document.getElementById("info");
 info.addEventListener("click", () => {
-    alert("E-Mail: yamato151008<at>gmail.com\nCopyright © 2024 Shirahata Yamato All Rights Reserved.");
+    alert("E-Mail: yamato151008<at>gmail.com\nCopyright © 2024-2025 Shirahata Yamato All Rights Reserved.");
 });
 
 const notice = document.getElementById("notice");
