@@ -3,6 +3,17 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+img {
+    width: 640px;
+    height: 480px;
+}
+@media (max-width: 750px) {
+    img {
+        width: 320px;
+        height: 240px;
+    }
+}
+
 label {
     vertical-align: middle;
 }
@@ -53,6 +64,71 @@ select {
     width: 260px;
 }
 
+.ctrl {
+    display: flex;
+    flex-direction: row;
+}
+@media (max-width: 375px) {
+    .ctrl {
+        flex-direction: column;
+    }
+}
+
+.img-field {
+    text-align: center;
+}
+
+.marker {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+  }
+
+.ctrl-btns {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-left: 10px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 750px) {
+    .ctrl-btns {
+        grid-template-rows: 120px 60px 60px;
+        margin-left: 0;
+    }
+}
+
+.cd-field {
+    text-align: left;
+    font-size: 24px;
+}
+@media (max-width: 750px) {
+    .cd-field {
+        font-size: 20px;
+    }
+}
+
+.large-btn {
+    height: 100%;
+}
+
+.ctrl-btn {
+    font-size: 60px;
+    width: 80%;
+    height: 90%;
+}
+@media (max-width: 750px) {
+    .ctrl-btn {
+        font-size: 40px;
+        width: 60%;
+    }
+}
+
 .ip-input {
     font-size: 12px;
     margin: auto 0 auto 0;
@@ -67,13 +143,28 @@ select {
 #ip {
     width: 100px;
 }
+@media (max-width: 750px) {
+    #ip {
+        width: 90px;
+    }
+}
 
 #port {
     width: 50px;
 }
+@media (max-width: 750px) {
+    #port {
+        width: 30px;
+    }
+}
 
 #ros_domain_id {
     width: 40px;
+}
+@media (max-width: 750px) {
+    #ros_domain_id {
+        width: 30px;
+    }
 }
 
 .connect {

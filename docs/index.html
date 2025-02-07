@@ -6,22 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>ALPS Web GUI</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" href="icons/favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="icons/favicon.ico" sizes="64x64">
+    <link rel="icon" href="icons/icon.svg" sizes="any" type="image/svg+xml">
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <script type="text/javascript" src="roslib.min.js"></script>
 </head>
 
 <body>
+    <!-- タイトルバー -->
     <div class="title-bar">
         <div class="title g-padding">ALPS Web GUI</div>
         <div id="sw-version" class="g-end">Ver. N/A</div>
-        <div id="status" class="g-padding">🟡【ROS接続状況】未接続（ws://localhost:9090 ID=10）</div>
+        <div id="status" class="g-padding">🟡【ROS接続状況】未接続（wss://localhost:9090 ID=10）</div>
     </div>
+
     <div class="g-margin">
-        <p>これはテストページです</p>
-        <p><img src="NO SIGNAL.png" id="ros_image" /></p>
+        <!-- コントローラ部分 -->
+        <div class="ctrl">
+            <div id="img-field" class="img-field">
+                <img src="NO SIGNAL.png" id="ros_image" class="img" />
+            </div>
+            <div class="ctrl-btns">
+                <div class="cd-field">
+                    <div id="cd-status">【状況】<span id="cd-status-t">座標選択待機中</span></div>
+                    <div id="cd-xy">【2D座標】（<span id="cd-xy-x">x</span>, <span id="cd-xy-y">y</span>; <span id="cd-xy-i">i</span>）</div>
+                    <div id="cd-xyz">【3D座標】（<span id="cd-xyz-x">x</span>, <span id="cd-xyz-y">y</span>, <span id="cd-xyz-z">z</span>）</div>
+                    <div id="cd-rtp">【3D座標】（<span id="cd-rtp-r">r</span>, <span id="cd-rtp-t">θ</span>, <span id="cd-rtp-p">φ</span>）</div>
+                </div>
+                <div class="inj-btn-field large-btn">
+                    <input type="button" value="射出" id="inj-btn" class="ctrl-btn" disabled>
+                </div>
+                <div class="rcv-btn-field large-btn">
+                    <input type="button" value="復旧" id="rcv-btn" class="ctrl-btn">
+                </div>
+            </div>
+        </div>
+
+        <!-- 設定部分 -->
         <div id="line">
             <hr class="mpart">
         </div>
@@ -37,12 +60,15 @@
             <label for="ros_domain_id">ID: </label>
             <input type="number" name="ros_domain_id" id="ros_domain_id" value="10">
             <input type="button" value="接続" id="connect">
+            <input type="button" value="R1" id="connect_R1">
+            <input type="button" value="R2" id="connect_R2">
+            <input type="button" value="試験" id="connect_Test">
             <input type="button" value="情報" id="info" class="set">
             <input type="button" value="通知" id="notice" class="set">
         </div>
     </div>
     <script type="text/javascript" src="script.js"></script>
-    <script type="module" src="app.js"></script>
+    <script type="text/javascript" src="app.js"></script>
 </body>
 
 </html>
