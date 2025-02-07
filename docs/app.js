@@ -70,6 +70,20 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
     });
 
+    // 射出指示
+    const trigger = new ROSLIB.Topic({
+        ros: ros,
+        name: "/shooting/trigger",
+        messageType: "std_msgs/Bool"
+    })
+
+    // リセット指示
+    const reset = new ROSLIB.Topic({
+        ros: ros,
+        name: "/shooting/reset",
+        messageType: "std_msgs/Bool"
+    })
+
     let getPoint3D = null;
 
     // Serviceクライアント
@@ -159,7 +173,14 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     // 「射出」押下時
     document.getElementById("inj-btn").addEventListener("click", () => {
         console.log("射出");
-        document.getElementById("cd-status-t").textContent = "射出実行中"
+        document.getElementById("cd-status-t").textContent = "射出実行中";
+
+        const trigger_msg = new ROSLIB.Message({
+            data: true
+        });
+        trigger.publish(trigger_msg);
+
+        document.getElementById("cd-status-t").textContent = "射出完了";
     });
 
     // 「復旧」押下時
@@ -185,6 +206,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         // 射出ボタンDisabled
         document.getElementById("inj-btn").disabled = true;
+
+        const reset_msg = new ROSLIB.Message({
+            data: true
+        });
+        reset.publish(reset_msg);
     });
 }
 
