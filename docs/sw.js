@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.16.0"
+const VERSION = "0.17.0"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
@@ -19,6 +19,7 @@ const CACHE_FILES = [
 	"icons/icon512.png",
     "NO SIGNAL.png",
     "marker.png",
+    "marker_auto.png",
 ];
 
 // インストール時処理

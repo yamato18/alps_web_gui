@@ -212,6 +212,30 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         });
         reset.publish(reset_msg);
     });
+
+    // 「詳細」押下時
+    document.getElementById("detail").addEventListener("click", () => {
+        alert(
+            "2D x ---------> " + "100" + "\n" +
+            "2D y ---------> " + "200" + "\n" +
+            "2D index -----> " + "20000" + "\n" +
+            "3D X ---------> " + "300" + " [m]\n" +
+            "3D Y ---------> " + "400" + " [m]\n" +
+            "3D Z ---------> " + "500" + " [m]\n" +
+            "3D Range -----> " + "200" + " [m]\n" +
+            "3D Theta -----> " + "90" + " [°]\n" +
+            "3D Phi -------> " + "90" + " [°]\n" +
+            "Distance -----> " + "200" + " [m]\n" +
+            "Yaw ----------> " + "200" + " [°]\n" +
+            "Pitch --------> " + "200" + " [°]\n" +
+            "Velocity -----> " + "200" + " [m/s]\n" +
+            "N ------------> " + "200" + " [r/s]\n" +
+            "MaxHeight ----> " + "2" + " [m]\n" +
+            "isAutoDetect -> " + "false" + "\n" +
+            "Auto 2D x ---->" + "200" + "\n" +
+            "Auto 2D y ---->" + "200" + "\n"
+        );
+    });
 }
 
 // ページ読み込み時
