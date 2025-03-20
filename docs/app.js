@@ -164,8 +164,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 const rad2deg = (rad) => rad * (180 / Math.PI);
 
                 document.getElementById("range-value").textContent = isNaN(r) ? r : parseFloat(r).toFixed(2);
-                document.getElementById("yaw-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
-                document.getElementById("pitch-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
+                document.getElementById("pitch-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
+                document.getElementById("yaw-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
                 document.getElementById("turn-value").textContent = isNaN(n) ? n : parseFloat(n).toFixed(2);
 
             });
@@ -196,8 +196,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("cd-status-t").textContent = "座標選択待機中";
 
         document.getElementById("range-value").textContent = "-----";
-        document.getElementById("yaw-value").textContent = "-----";
         document.getElementById("pitch-value").textContent = "-----";
+        document.getElementById("yaw-value").textContent = "-----";
         document.getElementById("turn-value").textContent = "-----";
 
         // マーカー削除
