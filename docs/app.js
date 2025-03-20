@@ -134,10 +134,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
 
         document.getElementById("cd-status-t").textContent = "座標取得中";
-        document.getElementById("cd-xy-x").textContent = x;
-        document.getElementById("cd-xy-y").textContent = y;
         const point_index = y * 640 + x;
-        document.getElementById("cd-xy-i").textContent = point_index;
 
         // マーカー削除
         removeMarker();
@@ -157,16 +154,20 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 point2d: { index: point_index }
             });
             getPoint3D.callService(request, (response) => {
-                const xyz = response.point3d_xyz;
-                const rtp = response.point3d_rtp;
+                // const point3d = response.point3d;
+                const param = response.shootparam;
+                const r = param.shoot_range;
+                const p = param.shoot_pitch;
+                const y = param.shoot_yaw;
+                const n = param.shoot_n;
 
-                document.getElementById("cd-xyz-x").textContent = isNaN(xyz.x) ? xyz.x : parseFloat(xyz.x).toFixed(2);
-                document.getElementById("cd-xyz-y").textContent = isNaN(xyz.y) ? xyz.y : parseFloat(xyz.y).toFixed(2);
-                document.getElementById("cd-xyz-z").textContent = isNaN(xyz.z) ? xyz.z : parseFloat(xyz.z).toFixed(2);
+                const rad2deg = (rad) => rad * (180 / Math.PI);
 
-                document.getElementById("cd-rtp-r").textContent = isNaN(rtp.range) ? rtp.range : parseFloat(rtp.range).toFixed(2);
-                document.getElementById("cd-rtp-t").textContent = isNaN(rtp.theta) ? rtp.theta : parseFloat(rtp.theta).toFixed(2);
-                document.getElementById("cd-rtp-p").textContent = isNaN(rtp.phi) ? rtp.phi : parseFloat(rtp.phi).toFixed(2);
+                document.getElementById("range-value").textContent = isNaN(r) ? r : parseFloat(r).toFixed(2);
+                document.getElementById("yaw-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
+                document.getElementById("pitch-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
+                document.getElementById("turn-value").textContent = isNaN(n) ? n : parseFloat(n).toFixed(2);
+
             });
             document.getElementById("cd-status-t").textContent = "座標表示中";
         }
@@ -194,17 +195,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         document.getElementById("cd-status-t").textContent = "座標選択待機中";
 
-        document.getElementById("cd-xy-x").textContent = "x";
-        document.getElementById("cd-xy-y").textContent = "y";
-        document.getElementById("cd-xy-i").textContent = "i";
-
-        document.getElementById("cd-xyz-x").textContent = "x";
-        document.getElementById("cd-xyz-y").textContent = "y";
-        document.getElementById("cd-xyz-z").textContent = "z";
-
-        document.getElementById("cd-rtp-r").textContent = "r";
-        document.getElementById("cd-rtp-t").textContent = "θ";
-        document.getElementById("cd-rtp-p").textContent = "φ";
+        document.getElementById("range-value").textContent = "-----";
+        document.getElementById("yaw-value").textContent = "-----";
+        document.getElementById("pitch-value").textContent = "-----";
 
         // マーカー削除
         removeMarker();
