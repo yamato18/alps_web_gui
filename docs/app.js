@@ -198,6 +198,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("range-value").textContent = "-----";
         document.getElementById("yaw-value").textContent = "-----";
         document.getElementById("pitch-value").textContent = "-----";
+        document.getElementById("turn-value").textContent = "-----";
 
         // マーカー削除
         removeMarker();
