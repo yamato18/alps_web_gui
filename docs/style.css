@@ -88,7 +88,7 @@ select {
 .ctrl-btns {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 4fr 3fr 3fr;
     gap: 10px;
     margin-left: 10px;
     width: 100%;
@@ -98,7 +98,7 @@ select {
 }
 @media (max-width: 960px) {
     .ctrl-btns {
-        grid-template-rows: 120px 60px 60px;
+        grid-template-rows: 160px 60px 60px;
         margin-left: 0;
     }
 }
