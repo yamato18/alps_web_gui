@@ -1,8 +1,12 @@
+let ros = null;
+
 // ROS接続
 const connectROS = (protocol, ip, port, ros_domain_id) => {
 
+    if (ros) return;
+
     // roslib.js
-    const ros = new ROSLIB.Ros({
+    ros = new ROSLIB.Ros({
         url: `${protocol}://${ip}:${port}`,
         options: {
             ros_domain_id: ros_domain_id
@@ -47,6 +51,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         console.log("【INFO】Connection closed");
         isConnected = false;
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
+        ros = null;
     });
 
     // Notification型
