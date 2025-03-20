@@ -186,7 +186,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         });
         trigger.publish(trigger_msg);
 
-        document.getElementById("cd-status-t").textContent = "射出完了";
+        document.getElementById("cd-status-t").textContent = "射出指示送信完了";
     });
 
     // 「復旧」押下時
