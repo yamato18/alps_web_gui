@@ -74,8 +74,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             const marker = document.createElement("img");
             marker.className = "marker";
             marker.src = "./marker_auto.png";
-            marker.style.left = `${auto_x + Math.round(window.scrollX) - 36}px`;
-            marker.style.top = `${auto_y + Math.round(window.scrollY) - 36}px`;
+            marker.style.left = `${auto_x + Math.round(window.scrollX) - 40 + 8}px`;
+            marker.style.top = `${auto_y + Math.round(window.scrollY) - 40 + 61}px`;
             img_field.appendChild(marker);
         });
     });
