@@ -22,8 +22,6 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         isConnected = true;
 
-        let oldUrl = null;
-
         // CompressedImage型
         const image = new ROSLIB.Topic({
             ros: ros,
@@ -32,23 +30,52 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         });
         // ROS接続成功で購読開始
         image.subscribe((message) => {
-            const byteChars = atob(message.data);
-            const byteNums = new Array(byteChars.length);
-            for (let i = 0; i < byteChars.length; i++) {
-                byteNums[i] = byteChars.charCodeAt(i);
+            const data = "data:image/jpeg;base64," + message.data;
+            document.getElementById("ros_image").setAttribute("src", data);
+        });
+
+        // Notification型
+        const rosNotification = new ROSLIB.Topic({
+            ros: ros,
+            name: "/Notification",
+            messageType: "web_gui_interfaces/msg/Notification"
+        });
+        // ROS接続成功で購読開始
+        rosNotification.subscribe((message) => {
+            console.log(message);
+            
+            if (Notification.permission === "granted") {
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification(message.title, {
+                        body: message.body,
+                    });
+                });
+            } else {
+                alert(message.title + "\n" + message.body + "\n\n※通知を許可してください");
             }
-            const byteArray = new Uint8Array(byteNums);
-            const blob = new Blob([byteArray], { type: "image/jpeg" });
+        });
 
-            const newURL = URL.createObjectURL(blob);
-            const imgElement = document.getElementById("ros_image"); 
+        // Point2D型
+        const autoDetect = new ROSLIB.Topic({
+            ros: ros,
+            name: "/goal_auto_detect",
+            messageType: "web_gui_interfaces/msg/Point2D"
+        });
+        // ROS接続成功で購読開始
+        autoDetect.subscribe((message) => {
+            const auto_x = message.x;
+            const auto_y = message.y;
 
-            if (oldUrl) {
-                URL.revokeObjectURL(oldUrl);
-            }
-            oldUrl = newURL;
+            // マーカー削除
+            removeMarker();
 
-            imgElement.src = newURL;
+            // マーカー作成
+            const marker = document.createElement("img");
+            marker.className = "marker";
+            marker.src = "./marker_auto.png";
+            marker.style.left = `${auto_x + Math.round(window.scrollX) - 40}px`;
+            marker.style.top = `${auto_y + Math.round(window.scrollY) - 40}px`;
+            img_field.appendChild(marker);
         });
     });
 
@@ -69,27 +96,6 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         isConnected = false;
         document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
         ros = null;
-    });
-
-    // Notification型
-    const ros_notification = new ROSLIB.Topic({
-        ros: ros,
-        name: "/Notification",
-        messageType: "web_gui_interfaces/msg/Notification"
-    });
-    // ROS接続成功で購読開始
-    ros_notification.subscribe((message) => {
-        console.log(message);
-        
-        if (Notification.permission === "granted") {
-            navigator.serviceWorker.ready.then((registration) => {
-                registration.showNotification(message.title, {
-                    body: message.body,
-                });
-            });
-        } else {
-            alert(message.title + "\n" + message.body + "\n\n※通知を許可してください");
-        }
     });
 
     // 射出指示
@@ -168,7 +174,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         if (isConnected) {
             document.getElementById("cd-status-t").textContent = "座標計算中";
             const request = new ROSLIB.ServiceRequest({
-                pointindex: { index: point_index }
+                point2d: { 
+                    x: x,
+                    y: y,
+                    index: point_index
+                }
             });
             getPoint3D.callService(request, (response) => {
                 // const point3d = response.point3d;
