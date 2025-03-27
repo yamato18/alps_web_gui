@@ -22,6 +22,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         isConnected = true;
 
+        let oldUrl = null;
+
         // CompressedImage型
         const image = new ROSLIB.Topic({
             ros: ros,
@@ -30,8 +32,23 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         });
         // ROS接続成功で購読開始
         image.subscribe((message) => {
-            const data = "data:image/png;base64," + message.data;
-            document.getElementById("ros_image").setAttribute("src", data);
+            const byteChars = atob(message.data);
+            const byteNums = new Array(byteChars.length);
+            for (let i = 0; i < byteChars.length; i++) {
+                byteNums[i] = byteChars.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNums);
+            const blob = new Blob([byteArray], { type: "image/jpeg" });
+
+            const newURL = URL.createObjectURL(blob);
+            const imgElement = document.getElementById("ros_image"); 
+
+            if (oldUrl) {
+                URL.revokeObjectURL(oldUrl);
+            }
+            oldUrl = newURL;
+
+            imgElement.src = newURL;
         });
     });
 
@@ -151,7 +168,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         if (isConnected) {
             document.getElementById("cd-status-t").textContent = "座標計算中";
             const request = new ROSLIB.ServiceRequest({
-                point2d: { index: point_index }
+                pointindex: { index: point_index }
             });
             getPoint3D.callService(request, (response) => {
                 // const point3d = response.point3d;
@@ -215,24 +232,24 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     // 「詳細」押下時
     document.getElementById("detail").addEventListener("click", () => {
         alert(
-            "2D x ---------> " + "100" + "\n" +
-            "2D y ---------> " + "200" + "\n" +
-            "2D index -----> " + "20000" + "\n" +
-            "3D X ---------> " + "300" + " [m]\n" +
-            "3D Y ---------> " + "400" + " [m]\n" +
-            "3D Z ---------> " + "500" + " [m]\n" +
-            "3D Range -----> " + "200" + " [m]\n" +
-            "3D Theta -----> " + "90" + " [°]\n" +
-            "3D Phi -------> " + "90" + " [°]\n" +
-            "Distance -----> " + "200" + " [m]\n" +
-            "Yaw ----------> " + "200" + " [°]\n" +
-            "Pitch --------> " + "200" + " [°]\n" +
-            "Velocity -----> " + "200" + " [m/s]\n" +
-            "N ------------> " + "200" + " [r/s]\n" +
-            "MaxHeight ----> " + "2" + " [m]\n" +
-            "isAutoDetect -> " + "false" + "\n" +
-            "Auto 2D x ---->" + "200" + "\n" +
-            "Auto 2D y ---->" + "200" + "\n"
+            // "2D x ---------> " + "100" + "\n" +
+            // "2D y ---------> " + "200" + "\n" +
+            // "2D index -----> " + "20000" + "\n" +
+            // "3D X ---------> " + "300" + " [m]\n" +
+            // "3D Y ---------> " + "400" + " [m]\n" +
+            // "3D Z ---------> " + "500" + " [m]\n" +
+            // "3D Range -----> " + "200" + " [m]\n" +
+            // "3D Theta -----> " + "90" + " [°]\n" +
+            // "3D Phi -------> " + "90" + " [°]\n" +
+            // "Distance -----> " + "200" + " [m]\n" +
+            // "Yaw ----------> " + "200" + " [°]\n" +
+            // "Pitch --------> " + "200" + " [°]\n" +
+            // "Velocity -----> " + "200" + " [m/s]\n" +
+            // "N ------------> " + "200" + " [r/s]\n" +
+            // "MaxHeight ----> " + "2" + " [m]\n" +
+            // "isAutoDetect -> " + "false" + "\n" +
+            // "Auto 2D x ---->" + "200" + "\n" +
+            // "Auto 2D y ---->" + "200" + "\n"
         );
     });
 }
