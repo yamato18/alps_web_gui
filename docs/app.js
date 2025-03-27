@@ -65,7 +65,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         autoDetect.subscribe((message) => {
             const auto_x = message.x;
             const auto_y = message.y;
-
+            console.log(auto_x, auto_y);
+            
             // マーカー削除
             removeMarker();
 
@@ -123,6 +124,35 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         });
     };
 
+    // Service処理
+    const getPointService = (x, y, point_index) => {
+        document.getElementById("cd-status-t").textContent = "座標計算中";
+            const request = new ROSLIB.ServiceRequest({
+                point2d: { 
+                    x: x,
+                    y: y,
+                    index: point_index
+                }
+            });
+            getPoint3D.callService(request, (response) => {
+                // const point3d = response.point3d;
+                const param = response.shootparam;
+                const r = param.shoot_range;
+                const p = param.shoot_pitch;
+                const y = param.shoot_yaw;
+                const n = param.shoot_n;
+
+                const rad2deg = (rad) => rad * (180 / Math.PI);
+
+                document.getElementById("range-value").textContent = isNaN(r) ? r : parseFloat(r).toFixed(2);
+                document.getElementById("pitch-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
+                document.getElementById("yaw-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
+                document.getElementById("turn-value").textContent = isNaN(n) ? n : parseFloat(n).toFixed(2);
+
+            });
+            document.getElementById("cd-status-t").textContent = "座標表示中";
+    }
+
     // マーカー削除
     const img_field = document.getElementById("img-field");
     const removeMarker = () => {
@@ -138,6 +168,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         const rect = img.getBoundingClientRect();
         const ax = Math.round(event.clientX) + 1;
         const ay = Math.round(event.clientY) + 1;
+        console.log(ax, ay);
+        
         let x, y;
         if (rect.width == 320) {
             x = 2 * (ax - Math.round(rect.left));
@@ -172,31 +204,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         // ROS接続成功時に送信
         if (isConnected) {
-            document.getElementById("cd-status-t").textContent = "座標計算中";
-            const request = new ROSLIB.ServiceRequest({
-                point2d: { 
-                    x: x,
-                    y: y,
-                    index: point_index
-                }
-            });
-            getPoint3D.callService(request, (response) => {
-                // const point3d = response.point3d;
-                const param = response.shootparam;
-                const r = param.shoot_range;
-                const p = param.shoot_pitch;
-                const y = param.shoot_yaw;
-                const n = param.shoot_n;
-
-                const rad2deg = (rad) => rad * (180 / Math.PI);
-
-                document.getElementById("range-value").textContent = isNaN(r) ? r : parseFloat(r).toFixed(2);
-                document.getElementById("pitch-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
-                document.getElementById("yaw-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
-                document.getElementById("turn-value").textContent = isNaN(n) ? n : parseFloat(n).toFixed(2);
-
-            });
-            document.getElementById("cd-status-t").textContent = "座標表示中";
+            getPointService(x, y, point_index);
         }
 
         // 射出ボタンEnabled
