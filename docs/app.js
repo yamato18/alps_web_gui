@@ -5,6 +5,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
     if (ros) return;
 
+    // 各種パラメータ
+    let aim_velocity = null;
+    let aim_pitch = null;
+    let aim_yaw = null;
+
     // roslib.js
     ros = new ROSLIB.Ros({
         url: `${protocol}://${ip}:${port}`,
@@ -65,6 +70,14 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         autoDetect.subscribe((message) => {
             const auto_x = message.x;
             const auto_y = message.y;
+
+            const rect = img.getBoundingClientRect();
+            if (rect.width == 320) {
+                auto_x = Math.round(auto_x / 2);
+            }
+            if (rect.height == 240) {
+                auto_y = Math.round(auto_y / 2);
+            }
             console.log(auto_x, auto_y);
             
             // マーカー削除
@@ -103,7 +116,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     const trigger = new ROSLIB.Topic({
         ros: ros,
         name: "/shooting/trigger",
-        messageType: "std_msgs/Bool"
+        messageType: "shooting_interfaces/msg/ShootingAimInfo"
     })
 
     // リセット指示
@@ -141,6 +154,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 const p = param.shoot_pitch;
                 const y = param.shoot_yaw;
                 const n = param.shoot_n;
+
+                // Publish用（後日最適化する）
+                aim_velocity = n;
+                aim_pitch = p;
+                aim_yaw = y;
 
                 const rad2deg = (rad) => rad * (180 / Math.PI);
 
@@ -217,7 +235,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("cd-status-t").textContent = "射出実行中";
 
         const trigger_msg = new ROSLIB.Message({
-            data: true
+            velocity: aim_velocity,
+            pitch: aim_pitch,
+            yaw: aim_yaw
         });
         trigger.publish(trigger_msg);
 
