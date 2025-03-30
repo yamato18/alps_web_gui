@@ -115,7 +115,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     // 射出指示
     const trigger = new ROSLIB.Topic({
         ros: ros,
-        name: "/shooting/trigger",
+        name: "/shooting/aim_info",
         messageType: "shooting_interfaces/msg/ShootingAimInfo"
     })
 
