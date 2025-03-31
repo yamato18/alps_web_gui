@@ -18,19 +18,19 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
     })
 
+    // リセット指示
+    const reset = new ROSLIB.Topic({
+        ros: ros,
+        name: "/shooting/aim_info/reset",
+        messageType: "std_msgs/Bool"
+    })
+
     let isConnected = false;
 
     ros.on("connection", () => {
         const status = document.getElementById("status");
         status.textContent = `🟢【ROS接続状況】接続済（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("【INFO】Connected");
-
-        // リセット指示
-        const reset = new ROSLIB.Topic({
-            ros: ros,
-            name: "/shooting/aim_info/reset",
-            messageType: "std_msgs/Bool"
-        })
 
         isConnected = true;
 
