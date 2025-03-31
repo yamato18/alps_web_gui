@@ -6,9 +6,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     if (ros) return;
 
     // 各種パラメータ
-    let aim_velocity = NaN;
-    let aim_pitch = NaN;
-    let aim_yaw = NaN;
+    let aim_velocity = null;
+    let aim_pitch = null;
+    let aim_yaw = null;
 
     // roslib.js
     ros = new ROSLIB.Ros({
@@ -117,13 +117,6 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         ros: ros,
         name: "/shooting/aim_info",
         messageType: "shooting_interfaces/msg/ShootingAimInfo"
-    })
-
-    // リセット指示
-    const reset = new ROSLIB.Topic({
-        ros: ros,
-        name: "/shooting/reset",
-        messageType: "std_msgs/Bool"
     })
 
     let getPoint3D = null;
