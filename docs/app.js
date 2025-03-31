@@ -6,9 +6,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     if (ros) return;
 
     // 各種パラメータ
-    let aim_velocity = null;
-    let aim_pitch = null;
-    let aim_yaw = null;
+    let aim_velocity = NaN;
+    let aim_pitch = NaN;
+    let aim_yaw = NaN;
 
     // roslib.js
     ros = new ROSLIB.Ros({
@@ -216,8 +216,13 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // ROS接続成功時に送信
         if (isConnected) {
             getPointService(x, y, point_index);
-            // 射出ボタンEnabled
-            document.getElementById("inj-btn").disabled = false;
+            if (!isNaN(aim_velocity) && !isNaN(aim_pitch) && !isNaN(aim_yaw)) {
+                // 射出ボタンEnabled
+                document.getElementById("inj-btn").disabled = false;
+            } else {
+                // 射出ボタンDisabled
+                document.getElementById("inj-btn").disabled = true;
+            }
         }
     });
 
@@ -226,14 +231,18 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         console.log("射出");
         document.getElementById("cd-status-t").textContent = "射出実行中";
 
-        const trigger_msg = new ROSLIB.Message({
-            velocity: aim_velocity,
-            pitch: aim_pitch,
-            yaw: aim_yaw
-        });
-        trigger.publish(trigger_msg);
-
-        document.getElementById("cd-status-t").textContent = "射出指示送信完了";
+        if (!isNaN(aim_velocity) && !isNaN(aim_pitch) && !isNaN(aim_yaw)) {
+            const trigger_msg = new ROSLIB.Message({
+                velocity: aim_velocity,
+                pitch: aim_pitch,
+                yaw: aim_yaw
+            });
+            trigger.publish(trigger_msg);
+    
+            document.getElementById("cd-status-t").textContent = "射出指示送信完了";
+        } else {
+            document.getElementById("cd-status-t").textContent = "射出指示送信中止";
+        }
     });
 
     // 「復旧」押下時
