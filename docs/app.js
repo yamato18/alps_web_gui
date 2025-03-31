@@ -151,6 +151,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             const y = param.shoot_yaw;
             const n = param.shoot_n;
 
+            // Publish用（後日最適化する）
+            aim_velocity = n;
+            aim_pitch = p;
+            aim_yaw = y;
+
             const rad2deg = (rad) => rad * (180 / Math.PI);
 
             document.getElementById("range-value").textContent = isNaN(r) ? r : parseFloat(r).toFixed(2);
@@ -160,8 +165,6 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         });
         document.getElementById("cd-status-t").textContent = "座標表示中";
-
-        return n, p, y;
     }
 
     // マーカー削除
@@ -215,9 +218,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
         // ROS接続成功時に送信
         if (isConnected) {
-            aim_velocity, aim_pitch, aim_yaw = getPointService(x, y, point_index);
-            console.log(aim_pitch);
-            
+            getPointService(x, y, point_index);
             if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
                 // 射出ボタンEnabled
                 document.getElementById("inj-btn").disabled = false;
@@ -232,7 +233,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     document.getElementById("inj-btn").addEventListener("click", () => {
         console.log("射出");
         document.getElementById("cd-status-t").textContent = "射出実行中";
+        console.log(aim_velocity);
         
+
         if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
             const trigger_msg = new ROSLIB.Message({
                 velocity: aim_velocity,
