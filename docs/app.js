@@ -216,6 +216,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // ROS接続成功時に送信
         if (isConnected) {
             aim_velocity, aim_pitch, aim_yaw = getPointService(x, y, point_index);
+            console.log(aim_pitch);
+            
             if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
                 // 射出ボタンEnabled
                 document.getElementById("inj-btn").disabled = false;
