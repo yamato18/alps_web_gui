@@ -237,6 +237,8 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     document.getElementById("inj-btn").addEventListener("click", () => {
         console.log("射出");
         document.getElementById("cd-status-t").textContent = "射出実行中";
+        console.log(isNaN(aim_velocity));
+        
 
         if (!isNaN(aim_velocity) && !isNaN(aim_pitch) && !isNaN(aim_yaw)) {
             const trigger_msg = new ROSLIB.Message({
