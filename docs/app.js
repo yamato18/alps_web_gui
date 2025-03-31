@@ -18,6 +18,13 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
     })
 
+    // リセット指示
+    const reset = new ROSLIB.Topic({
+        ros: ros,
+        name: "/shooting/aim_info/reset",
+        messageType: "std_msgs/Bool"
+    })
+
     let isConnected = false;
 
     ros.on("connection", () => {
@@ -262,12 +269,10 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // 射出ボタンDisabled
         document.getElementById("inj-btn").disabled = true;
 
-        const trigger_msg = new ROSLIB.Message({
-            velocity: 0,
-            pitch: NaN,
-            yaw: NaN
+        const reset_msg = new ROSLIB.Message({
+            data: true
         });
-        trigger.publish(trigger_msg);
+        reset.publish(reset_msg);
     });
 
     // 「詳細」押下時
