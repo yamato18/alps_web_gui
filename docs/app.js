@@ -18,19 +18,19 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
     })
 
-    // リセット指示
-    const reset = new ROSLIB.Topic({
-        ros: ros,
-        name: "/shooting/aim_info/reset",
-        messageType: "std_msgs/Bool"
-    })
-
     let isConnected = false;
 
     ros.on("connection", () => {
         const status = document.getElementById("status");
         status.textContent = `🟢【ROS接続状況】接続済（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("【INFO】Connected");
+
+        // リセット指示
+        const reset = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/aim_info/reset",
+            messageType: "std_msgs/Bool"
+        })
 
         isConnected = true;
 
@@ -75,9 +75,10 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         });
         // ROS接続成功で購読開始
         autoDetect.subscribe((message) => {
-            const auto_x = message.x;
-            const auto_y = message.y;
+            let auto_x = message.x;
+            let auto_y = message.y;
 
+            const img = document.getElementById("ros_image");
             const rect = img.getBoundingClientRect();
             if (rect.width == 320) {
                 auto_x = Math.round(auto_x / 2);
@@ -126,16 +127,12 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         messageType: "shooting_interfaces/msg/ShootingAimInfo"
     })
 
-    let getPoint3D = null;
-
     // Serviceクライアント
-    if (!getPoint3D) {
-        getPoint3D = new ROSLIB.Service({
-            ros: ros,
-            name: "/get_point3_d",
-            serviceType: "web_gui_interfaces/srv/GetPoint3D"
-        });
-    };
+    const getPoint3D = new ROSLIB.Service({
+        ros: ros,
+        name: "/get_point3_d",
+        serviceType: "web_gui_interfaces/srv/GetPoint3D"
+    });
 
     // Service処理
     const getPointService = (x, y, point_index) => {
@@ -223,7 +220,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // ROS接続成功時に送信
         if (isConnected) {
             getPointService(x, y, point_index);
-            if (!isNaN(aim_velocity) && !isNaN(aim_pitch) && !isNaN(aim_yaw)) {
+            if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
                 // 射出ボタンEnabled
                 document.getElementById("inj-btn").disabled = false;
             } else {
@@ -240,7 +237,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         console.log(aim_velocity);
         
 
-        if (!isNaN(aim_velocity) && !isNaN(aim_pitch) && !isNaN(aim_yaw)) {
+        if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
             const trigger_msg = new ROSLIB.Message({
                 velocity: aim_velocity,
                 pitch: aim_pitch,
