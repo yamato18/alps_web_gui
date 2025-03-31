@@ -6,9 +6,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     if (ros) return;
 
     // 各種パラメータ
-    let aim_velocity = null;
-    let aim_pitch = null;
-    let aim_yaw = null;
+    let aim_velocity = NaN;
+    let aim_pitch = NaN;
+    let aim_yaw = NaN;
 
     // roslib.js
     ros = new ROSLIB.Ros({
@@ -223,10 +223,9 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // ROS接続成功時に送信
         if (isConnected) {
             getPointService(x, y, point_index);
+            // 射出ボタンEnabled
+            document.getElementById("inj-btn").disabled = false;
         }
-
-        // 射出ボタンEnabled
-        document.getElementById("inj-btn").disabled = false;
     });
 
     // 「射出」押下時
@@ -261,10 +260,12 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         // 射出ボタンDisabled
         document.getElementById("inj-btn").disabled = true;
 
-        const reset_msg = new ROSLIB.Message({
-            data: true
+        const trigger_msg = new ROSLIB.Message({
+            velocity: 0,
+            pitch: NaN,
+            yaw: NaN
         });
-        reset.publish(reset_msg);
+        trigger.publish(trigger_msg);
     });
 
     // 「詳細」押下時
