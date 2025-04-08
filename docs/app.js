@@ -237,7 +237,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
 
     // 「指向」押下時
     document.getElementById("inj-btn").addEventListener("click", () => {
-        console.log("射出");
+        console.log("指向");
         document.getElementById("cd-status-t").textContent = "指向実行中";
         console.log(aim_velocity);
         
@@ -262,17 +262,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         document.getElementById("cd-status-t").textContent = "射出実行中";
         console.log(aim_velocity);
         
-
-        if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
-            const trigger_msg = new ROSLIB.Message({
+        const test_msg = new ROSLIB.Message({
                 data: true
-            });
-            trigger.publish(trigger_msg);
-    
-            document.getElementById("cd-status-t").textContent = "射出指示送信完了";
-        } else {
-            document.getElementById("cd-status-t").textContent = "射出指示送信中止";
-        }
+        });
+        air.publish(test_msg);
+        document.getElementById("cd-status-t").textContent = "射出指示送信完了";
     });
 
     // 「復旧」押下時
