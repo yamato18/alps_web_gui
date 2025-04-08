@@ -126,6 +126,12 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         messageType: "shooting_interfaces/msg/ShootingAimInfo"
     })
 
+    const air = new ROSLIB.Topic({
+        ros: ros,
+        name: "/shooting/trigger/gui",
+        messageType: "std_msgs/Bool"
+    })
+
     // Serviceクライアント
     const getPoint3D = new ROSLIB.Service({
         ros: ros,
@@ -229,10 +235,10 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
     });
 
-    // 「射出」押下時
+    // 「指向」押下時
     document.getElementById("inj-btn").addEventListener("click", () => {
         console.log("射出");
-        document.getElementById("cd-status-t").textContent = "射出実行中";
+        document.getElementById("cd-status-t").textContent = "指向実行中";
         console.log(aim_velocity);
         
 
@@ -241,6 +247,25 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
                 velocity: aim_velocity,
                 pitch: aim_pitch,
                 yaw: aim_yaw
+            });
+            trigger.publish(trigger_msg);
+    
+            document.getElementById("cd-status-t").textContent = "指向指示送信完了";
+        } else {
+            document.getElementById("cd-status-t").textContent = "指向指示送信中止";
+        }
+    });
+
+    // 「射出」押下時
+    document.getElementById("test-btn").addEventListener("click", () => {
+        console.log("射出");
+        document.getElementById("cd-status-t").textContent = "射出実行中";
+        console.log(aim_velocity);
+        
+
+        if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
+            const trigger_msg = new ROSLIB.Message({
+                data: true
             });
             trigger.publish(trigger_msg);
     

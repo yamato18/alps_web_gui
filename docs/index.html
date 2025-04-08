@@ -37,12 +37,34 @@
                     <div id="turn">【回転数】<span id="turn-value">-----</span> [turn/s]</div>
                 </div>
                 <div class="inj-btn-field large-btn">
-                    <input type="button" value="射出" id="inj-btn" class="ctrl-btn" disabled>
+                    <input type="button" value="指向" id="inj-btn" class="ctrl-btn" disabled>
+                </div>
+                <div class="test-btn large-btn">
+                    <input type="button" value="射出" id="test-btn" class="ctrl-btn">
                 </div>
                 <div class="rcv-btn-field large-btn">
                     <input type="button" value="復旧" id="rcv-btn" class="ctrl-btn">
                 </div>
             </div>
+        </div>
+
+        <!-- マニュアルコントローラ -->
+        <div class="manual-ctrl">
+            <details>
+                <summary>マニュアルコントローラ</summary>
+                <div class="">
+                    <input type="number" name="" id="" placeholder="ピッチ [deg]" step="0.01" min="0" max="90">
+                    <input type="number" name="" id="" placeholder="ヨー [deg]" step="0.01" min="-90" max="90">
+                    <input type="number" name="" id="" placeholder="回転数 [turn/s]" step="0.01" min="0" max="100">
+                    <input type="button" value="送信">
+                </div>
+                <div class="manual-btn">
+                    <input type="button" value="▲">
+                    <input type="button" value="▲">
+                    <input type="button" value="▲">
+                    <input type="button" value="▲">
+                </div>
+            </details>
         </div>
 
         <!-- 設定部分 -->
