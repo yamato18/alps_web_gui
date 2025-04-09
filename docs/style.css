@@ -95,7 +95,7 @@ select {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 2fr 1fr 1fr 1fr;
-    gap: 10px;
+    gap: 4px;
     margin-left: 10px;
     width: 100%;
     text-align: center;
