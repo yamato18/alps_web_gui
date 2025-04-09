@@ -26,6 +26,9 @@ input {
     margin-bottom: 2px;
     appearance: none;
     -webkit-appearance: none;
+}
+
+.no-pad {
     padding: 0;
 }
 
