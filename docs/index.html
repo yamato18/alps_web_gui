@@ -36,13 +36,13 @@
                     <div id="yaw">【ヨ　ー】<span id="yaw-value">-----</span> [°]</div>
                     <div id="turn">【回転数】<span id="turn-value">-----</span> [turn/s]</div>
                 </div>
-                <div class="inj-btn-field large-btn">
-                    <input type="button" value="照準" id="inj-btn" class="ctrl-btn no-pad" disabled>
+                <div class="aim-btn-field">
+                    <input type="button" value="照準" id="aim-btn" class="ctrl-btn no-pad" disabled>
                 </div>
-                <div class="test-btn large-btn">
-                    <input type="button" value="射撃" id="test-btn" class="ctrl-btn no-pad">
+                <div class="inj-btn-field">
+                    <input type="button" value="射撃" id="inj-btn" class="ctrl-btn no-pad" disabled>
                 </div>
-                <div class="rcv-btn-field large-btn">
+                <div class="rcv-btn-field">
                     <input type="button" value="復旧" id="rcv-btn" class="ctrl-btn no-pad">
                 </div>
             </div>
@@ -81,8 +81,14 @@
                             <input type="number" name="" id="" class="manual-input-btn placeholder-font-size no-pad" placeholder="回転数 [turn/s]" step="0.1" min="0" max="100">
                             <input type="button" class="manual-input-btn pm-font-size no-pad" value="+">
                         </div>
+                        <div class="manual-aim-btn-field">
+                            <input type="button" class="manual-input manual-aim-btn no-pad" value="照準">
+                        </div>
                         <div class="manual-inj-btn-field">
-                            <input type="button" class="manual-input manual-inj-btn no-pad" value="照準">
+                            <input type="button" class="manual-input manual-inj-btn no-pad" value="射撃">
+                        </div>
+                        <div class="manual-rcv-btn-field">
+                            <input type="button" class="manual-input manual-rcv-btn no-pad" value="復旧">
                         </div>
                     </div>
                 </div>

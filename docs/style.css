@@ -24,8 +24,8 @@ input {
     vertical-align: middle;
     margin-top: 2px;
     margin-bottom: 2px;
-    appearance: none;
-    -webkit-appearance: none;
+    /* appearance: none;
+    -webkit-appearance: none; */
 }
 
 .no-pad {
@@ -95,7 +95,7 @@ select {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 2fr 1fr 1fr 1fr;
-    gap: 4px;
+    gap: 10px;
     margin-left: 10px;
     width: 100%;
     text-align: center;
@@ -119,10 +119,6 @@ select {
     }
 }
 
-/* .large-btn {
-    height: 100%;
-} */
-
 .ctrl-btn {
     font-size: 60px;
     width: 80%;
@@ -141,7 +137,7 @@ select {
 .manual-ctrl-field {
     display: grid;
     grid-template-columns: 640px 1fr;
-    padding-top: 8px;
+    /* padding-top: 8px; */
 }
 @media (max-width: 960px) {
     .manual-ctrl-field {
@@ -210,18 +206,18 @@ select {
 .manual-inputs {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    /* gap: 2px; */
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    /* gap: 10px; */
     margin-left: 10px;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     text-align: center;
     justify-content: center;
     align-items: center;
 }
 @media (max-width: 960px) {
     .manual-inputs {
-        grid-template-rows: 60px 60px 60px 80px;
+        grid-template-rows: 60px 60px 60px auto auto auto;
         margin-left: 0;
     }
 }
