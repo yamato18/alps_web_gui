@@ -24,8 +24,8 @@ input {
     vertical-align: middle;
     margin-top: 2px;
     margin-bottom: 2px;
-    /* appearance: none;
-    -webkit-appearance: none; */
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .no-pad {
