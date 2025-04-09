@@ -1,5 +1,5 @@
 // バージョン
-const VERSION = "0.20.18"
+const VERSION = "0.20.19"
 
 // キャッシュ名
 const CACHE_NAME  = `ALPS-Web-GUI-${VERSION}`;
