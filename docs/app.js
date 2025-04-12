@@ -235,12 +235,11 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         }
     });
 
-    // 「指向」押下時
-    document.getElementById("inj-btn").addEventListener("click", () => {
-        console.log("指向");
-        document.getElementById("cd-status-t").textContent = "指向実行中";
+    // 「照準」押下時
+    document.getElementById("aim-btn").addEventListener("click", () => {
+        console.log("オート照準");
+        document.getElementById("cd-status-t").textContent = "オート照準中";
         console.log(aim_velocity);
-        
 
         if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
             const trigger_msg = new ROSLIB.Message({
@@ -250,23 +249,23 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             });
             trigger.publish(trigger_msg);
     
-            document.getElementById("cd-status-t").textContent = "指向指示送信完了";
+            document.getElementById("cd-status-t").textContent = "照準指示送信完了";
         } else {
-            document.getElementById("cd-status-t").textContent = "指向指示送信中止";
+            document.getElementById("cd-status-t").textContent = "照準指示送信中止";
         }
     });
 
-    // 「射出」押下時
-    document.getElementById("test-btn").addEventListener("click", () => {
-        console.log("射出");
-        document.getElementById("cd-status-t").textContent = "射出実行中";
+    // 「射撃」押下時
+    document.getElementById("inj-btn").addEventListener("click", () => {
+        console.log("射撃");
+        document.getElementById("cd-status-t").textContent = "射撃実行中";
         console.log(aim_velocity);
         
         const test_msg = new ROSLIB.Message({
                 data: true
         });
         air.publish(test_msg);
-        document.getElementById("cd-status-t").textContent = "射出指示送信完了";
+        document.getElementById("cd-status-t").textContent = "射撃指示送信完了";
     });
 
     // 「復旧」押下時
@@ -314,6 +313,30 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             // "Auto 2D x ---->" + "200" + "\n" +
             // "Auto 2D y ---->" + "200" + "\n"
         );
+    });
+
+    // マニュアル照準
+    // 「照準」押下時
+    document.getElementById("manual-inj-btn").addEventListener("click", () => {
+        console.log("マニュアル照準");
+        document.getElementById("cd-status-t").textContent = "マニュアル照準中";
+
+        const manual_vel = document.getElementById("manual-turn-value").value;
+        const manual_pitch = document.getElementById("manual-pitch-value").value;
+        const manual_yaw = document.getElementById("manual-yaw-value").value;
+
+        if (manual_vel !== null && manual_pitch !== null && manual_yaw !== null) {
+            const trigger_msg = new ROSLIB.Message({
+                velocity: manual_vel,
+                pitch: manual_pitch,
+                yaw: manual_yaw
+            });
+            trigger.publish(trigger_msg);
+    
+            document.getElementById("cd-status-t").textContent = "照準指示送信完了";
+        } else {
+            document.getElementById("cd-status-t").textContent = "照準指示送信中止";
+        }
     });
 }
 
