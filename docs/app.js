@@ -227,10 +227,10 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             getPointService(x, y, point_index);
             if (!isNaN(aim_velocity) && aim_velocity !== null && !isNaN(aim_pitch) && aim_pitch !== null && !isNaN(aim_yaw) && aim_yaw !== null) {
                 // 射出ボタンEnabled
-                document.getElementById("inj-btn").disabled = false;
+                document.getElementById("aim-btn").disabled = false;
             } else {
                 // 射出ボタンDisabled
-                document.getElementById("inj-btn").disabled = true;
+                document.getElementById("aim-btn").disabled = true;
             }
         }
     });
@@ -283,7 +283,7 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         removeMarker();
 
         // 射出ボタンDisabled
-        document.getElementById("inj-btn").disabled = true;
+        document.getElementById("aim-btn").disabled = true;
 
         const reset_msg = new ROSLIB.Message({
             data: true
