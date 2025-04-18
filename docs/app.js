@@ -149,7 +149,7 @@ const imageClickHandler = () => {
      // 座標取得・照準描写
     $("ros_image").addEventListener("click", (event) => {
 
-        const rect = img.getBoundingClientRect();
+        const rect = $("ros_image").getBoundingClientRect();
         const ax = Math.round(event.clientX) + 1;
         const ay = Math.round(event.clientY) + 1;
 
