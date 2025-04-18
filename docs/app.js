@@ -61,7 +61,7 @@ const createMarker = (src, x, y) => {
         marker.src = src;
         marker.style.left = `${x}px`;
         marker.style.top = `${y}px`;
-        img_field.appendChild(marker);
+        $("img_field").appendChild(marker);
 };
 
 /**
