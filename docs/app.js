@@ -61,7 +61,7 @@ const createMarker = (src, x, y) => {
         marker.src = src;
         marker.style.left = `${x}px`;
         marker.style.top = `${y}px`;
-        $("img_field").appendChild(marker);
+        $("img-field").appendChild(marker);
 };
 
 /**
@@ -295,16 +295,15 @@ const reset = () => {
 $("aim-btn").addEventListener("click", () => {
     console.log("オート照準");
     $("cd-status-t").textContent = "オート照準中";
-    console.log(aim_velocity);
 
-    const isValidAimParams = !isNaN(aim_velocity) && aim_velocity !== null &&
-                          !isNaN(aim_pitch) && aim_pitch !== null &&
-                          !isNaN(aim_yaw) && aim_yaw !== null;
+    const isValidAimParams = !isNaN(aimParams.velocity) && aimParams.velocity !== null &&
+                          !isNaN(aimParams.pitch) && aimParams.pitch !== null &&
+                          !isNaN(aimParams.yaw) && aimParams.yaw !== null;
     if (isValidAimParams) {
         const aim_msg = new ROSLIB.Message({
-            velocity: aim_velocity,
-            pitch: aim_pitch,
-            yaw: aim_yaw
+            velocity: aimParams.velocity,
+            pitch: aimParams.pitch,
+            yaw: aimParams.yaw
         });
         aim_trigger.publish(aim_msg);
 
@@ -374,7 +373,7 @@ $("rcv-btn").addEventListener("click", () => {
 
 // マニュアル照準
 // 「照準」押下時
-$("manual-inj-btn").addEventListener("click", () => {
+$("manual-aim-btn").addEventListener("click", () => {
     console.log("マニュアル照準");
     $("cd-status-t").textContent = "マニュアル照準中";
 
@@ -388,7 +387,7 @@ $("manual-inj-btn").addEventListener("click", () => {
             pitch: manual_pitch,
             yaw: manual_yaw
         });
-        trigger.publish(trigger_msg);
+        aim_trigger.publish(trigger_msg);
 
         $("cd-status-t").textContent = "射撃準備完了";
 
