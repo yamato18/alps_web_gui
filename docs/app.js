@@ -21,7 +21,7 @@ const rad2deg = (rad) => rad * (180 / Math.PI);
  * @param {*} id id
  * @returns 短縮
  */
-const $ = (id) => $(id);
+const $ = (id) => document.getElementById(id);
 
 /**
  * 
