@@ -229,18 +229,18 @@ const getPointService = (x, y, point_index) => {
         $("pitch-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
         $("yaw-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
         $("turn-value").textContent = isNaN(n) ? n : parseFloat(n).toFixed(2);
-    });
 
-    const isValidParams = !isNaN(n) && n !== null &&
-                          !isNaN(p) && p !== null && 
-                          !isNaN(y) && y !== null;
-    if (isValidParams) {
-        $("aim-btn").disabled = false;
-        $("cd-status-t").textContent = "照準待機中";
-    } else {
-        $("aim-btn").disabled = true;
-        $("cd-status-t").textContent = "座標選択待機中";
-    }    
+        const isValidParams = !isNaN(n) && n !== null &&
+                            !isNaN(p) && p !== null && 
+                            !isNaN(y) && y !== null;
+        if (isValidParams) {
+            $("aim-btn").disabled = false;
+            $("cd-status-t").textContent = "照準待機中";
+        } else {
+            $("aim-btn").disabled = true;
+            $("cd-status-t").textContent = "座標選択待機中";
+        }  
+    });  
 };
 
 // 照準用トピック
