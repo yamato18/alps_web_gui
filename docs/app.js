@@ -45,10 +45,7 @@ const showNotification = (title, body) => {
  * @brief マーカー削除
  */
 const removeMarker = () => {
-    const existMarkers = $("img_field").getElementsByClassName("marker");
-    while (0 < existMarkers.length) {
-        existMarkers[0].remove();
-    }
+    document.querySelectorAll(".marker").forEach(marker => marker.remove());
 };
 
 /**
