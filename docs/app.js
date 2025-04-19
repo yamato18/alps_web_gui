@@ -340,7 +340,7 @@ $("inj-btn").addEventListener("click", () => {
 
     $("cd-status-t").textContent = "射撃指令送信完了";
 
-    if (window.confirm("射出機構を停止し、初期化しますか？")) {
+    if (window.confirm("【射撃指令送信完了】\n射出機構を停止し、初期化しますか？")) {
         reset();
         const inj_msg = new ROSLIB.Message({
             data: false
@@ -406,6 +406,24 @@ $("manual-aim-btn").addEventListener("click", () => {
     } else {
         $("cd-status-t").textContent = "照準指令送信中止";
     }
+});
+
+// 「装填」押下時
+$("manual-inj-btn").addEventListener("click", () => {
+    console.log("エアシリ作動");
+    $("cd-status-t").textContent = "エアシリ動作中";
+    
+    const inj_msg = new ROSLIB.Message({
+            data: true
+    });
+    air_trigger.publish(inj_msg);
+
+    $("cd-status-t").textContent = "エアシリ動作完了";
+});
+
+// 「復旧」押下時
+$("manual-rcv-btn").addEventListener("click", () => {
+    reset();
 });
 
 // 「較正」押下時
