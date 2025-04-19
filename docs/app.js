@@ -332,7 +332,6 @@ $("aim-btn").addEventListener("click", () => {
 $("inj-btn").addEventListener("click", () => {
     console.log("射撃");
     $("cd-status-t").textContent = "射撃実行中";
-    console.log(aim_velocity);
     
     const inj_msg = new ROSLIB.Message({
             data: true
