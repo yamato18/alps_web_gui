@@ -2,7 +2,7 @@
 let ros = null;
 
 // トピックの宣言
-let aim_trigger, air_trigger, reset_trigger;
+let aim_trigger, air_trigger, reset_trigger, cal_trigger;
 
 // 照準用パラメータ
 let aimParams = {
@@ -112,6 +112,13 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
         reset_trigger = new ROSLIB.Topic({
             ros: ros,
             name: "/shooting/aim_info/reset",
+            messageType: "std_msgs/Bool"
+        });
+
+        // キャリブレーション用トピック
+        cal_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/reset/gui",
             messageType: "std_msgs/Bool"
         });
 
@@ -400,6 +407,21 @@ $("manual-aim-btn").addEventListener("click", () => {
     } else {
         $("cd-status-t").textContent = "照準指令送信中止";
     }
+});
+
+// 「較正」押下時
+$("manual-cal-btn").addEventListener("click", () => {
+    console.log("キャリブレーション開始");
+    $("cd-status-t").textContent = "キャリブレーション中";
+
+    // インターロックは後で実装
+
+    const cal_msg = new ROSLIB.Message({
+        data: true
+    });
+    cal_trigger.publish(cal_msg);
+    
+    $("cd-status-t").textContent = "座標選択待機中";
 });
 
 // ページ読み込み時
