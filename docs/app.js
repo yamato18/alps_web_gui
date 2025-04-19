@@ -384,6 +384,75 @@ $("rcv-btn").addEventListener("click", () => {
 // });
 
 // マニュアル照準
+// 「↑」押下時
+
+
+// 「↓」押下時
+
+
+// 「←」押下時
+
+
+// 「→」押下時
+
+
+// 「較正」押下時
+$("manual-cal-btn").addEventListener("click", () => {
+    console.log("キャリブレーション開始");
+    $("cd-status-t").textContent = "キャリブレーション中";
+
+    // インターロックは後で実装
+
+    const cal_msg = new ROSLIB.Message({
+        data: true
+    });
+    cal_trigger.publish(cal_msg);
+    
+    $("cd-status-t").textContent = "座標選択待機中";
+});
+
+// ピッチ調整
+$("pitch-dec").addEventListener("click", () => {
+    const currentValue = Number($("manual-pitch-value").value);
+    if (!(currentValue - 0.1 < 0)) {
+        $("manual-pitch-value").value = (currentValue - 0.1).toFixed(1);
+    }
+});
+$("pitch-inc").addEventListener("click", () => {
+    const currentValue = Number($("manual-pitch-value").value);
+    if (!(currentValue + 0.1 > 90)) {
+        $("manual-pitch-value").value = (currentValue + 0.1).toFixed(1);
+    }
+});
+
+// ヨー調整
+$("yaw-dec").addEventListener("click", () => {
+    const currentValue = Number($("manual-yaw-value").value);
+    if (!(currentValue - 0.1 < -90)) {
+        $("manual-yaw-value").value = (currentValue - 0.1).toFixed(1);
+    }
+});
+$("yaw-inc").addEventListener("click", () => {
+    const currentValue = Number($("manual-yaw-value").value);
+    if (!(currentValue + 0.1 > 90)) {
+        $("manual-yaw-value").value = (currentValue + 0.1).toFixed(1);
+    }
+});
+
+// 回転数調整
+$("turn-dec").addEventListener("click", () => {
+    const currentValue = Number($("manual-turn-value").value);
+    if (!(currentValue - 0.1 < 0)) {
+        $("manual-turn-value").value = (currentValue - 0.1).toFixed(1);
+    }
+});
+$("turn-inc").addEventListener("click", () => {
+    const currentValue = Number($("manual-turn-value").value);
+    if (!(currentValue + 0.1 > 100)) {
+        $("manual-turn-value").value = (currentValue + 0.1).toFixed(1);
+    }
+});
+
 // 「照準」押下時
 $("manual-aim-btn").addEventListener("click", () => {
     console.log("マニュアル照準");
@@ -423,22 +492,10 @@ $("manual-inj-btn").addEventListener("click", () => {
 
 // 「復旧」押下時
 $("manual-rcv-btn").addEventListener("click", () => {
+    $("manual-pitch-value").value = "";
+    $("manual-yaw-value").value = "";
+    $("manual-turn-value").value = "";
     reset();
-});
-
-// 「較正」押下時
-$("manual-cal-btn").addEventListener("click", () => {
-    console.log("キャリブレーション開始");
-    $("cd-status-t").textContent = "キャリブレーション中";
-
-    // インターロックは後で実装
-
-    const cal_msg = new ROSLIB.Message({
-        data: true
-    });
-    cal_trigger.publish(cal_msg);
-    
-    $("cd-status-t").textContent = "座標選択待機中";
 });
 
 // ページ読み込み時
