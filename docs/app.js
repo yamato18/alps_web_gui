@@ -1,4 +1,8 @@
+// ROS
 let ros = null;
+
+// トピックの宣言
+let aim_trigger, air_trigger, reset_trigger;
 
 // 照準用パラメータ
 let aimParams = {
@@ -88,6 +92,29 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
     ros.on("connection", () => {
         $("status").textContent = `🟢【ROS接続状況】接続済（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("【INFO】Connected");
+
+        // トピックを初期化
+        // 照準用トピック
+        aim_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/aim_info",
+            messageType: "shooting_interfaces/msg/ShootingAimInfo"
+        });
+
+        // 射撃用トピック
+        air_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/trigger/gui",
+            messageType: "std_msgs/Bool"
+        });
+
+        // リセット用トピック
+        reset_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/aim_info/reset",
+            messageType: "std_msgs/Bool"
+        });
+
         rosSubscriptions();
     });
 
@@ -243,27 +270,6 @@ const getPointService = (x, y, point_index) => {
     });  
 };
 
-// 照準用トピック
-const aim_trigger = new ROSLIB.Topic({
-    ros: ros,
-    name: "/shooting/aim_info",
-    messageType: "shooting_interfaces/msg/ShootingAimInfo"
-});
-
-// 射撃用トピック
-const air_trigger = new ROSLIB.Topic({
-    ros: ros,
-    name: "/shooting/trigger/gui",
-    messageType: "std_msgs/Bool"
-});
-
-// リセット用トピック
-const reset_trigger = new ROSLIB.Topic({
-    ros: ros,
-    name: "/shooting/aim_info/reset",
-    messageType: "std_msgs/Bool"
-});
-
 /**
  * 
  * @brief リセット処理
@@ -297,8 +303,8 @@ $("aim-btn").addEventListener("click", () => {
     $("cd-status-t").textContent = "オート照準中";
 
     const isValidAimParams = !isNaN(aimParams.velocity) && aimParams.velocity !== null &&
-                          !isNaN(aimParams.pitch) && aimParams.pitch !== null &&
-                          !isNaN(aimParams.yaw) && aimParams.yaw !== null;
+                             !isNaN(aimParams.pitch) && aimParams.pitch !== null &&
+                             !isNaN(aimParams.yaw) && aimParams.yaw !== null;
     if (isValidAimParams) {
         const aim_msg = new ROSLIB.Message({
             velocity: aimParams.velocity,
