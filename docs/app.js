@@ -19,6 +19,14 @@ let aimParams = {
  */
 const rad2deg = (rad) => rad * (180 / Math.PI);
 
+// rad -> deg 変換
+/**
+ * 
+ * @param {number} deg 度
+ * @returns ラジアン
+ */
+const deg2rad = (deg) => deg * (Math.PI / 180);
+
 /**
  * 
  * @brief `$(id)`を短縮
@@ -459,8 +467,8 @@ $("manual-aim-btn").addEventListener("click", () => {
     $("cd-status-t").textContent = "マニュアル照準中";
 
     const manual_vel = Number($("manual-turn-value").value);
-    const manual_pitch = Number($("manual-pitch-value").value);
-    const manual_yaw = Number($("manual-yaw-value").value);
+    const manual_pitch = deg2rad(Number($("manual-pitch-value").value));
+    const manual_yaw = deg2rad(Number($("manual-yaw-value").value));
 
     if (manual_vel !== null && manual_pitch !== null && manual_yaw !== null) {
         const trigger_msg = new ROSLIB.Message({
