@@ -30,18 +30,69 @@
             </div>
             <div class="ctrl-btns">
                 <div class="cd-field">
-                    <div id="cd-status">【状況】<span id="cd-status-t">座標選択待機中</span></div>
-                    <div id="cd-xy">【2D座標】（<span id="cd-xy-x">x</span>, <span id="cd-xy-y">y</span>; <span id="cd-xy-i">i</span>）</div>
-                    <div id="cd-xyz">【3D座標】（<span id="cd-xyz-x">x</span>, <span id="cd-xyz-y">y</span>, <span id="cd-xyz-z">z</span>）</div>
-                    <div id="cd-rtp">【3D座標】（<span id="cd-rtp-r">r</span>, <span id="cd-rtp-t">θ</span>, <span id="cd-rtp-p">φ</span>）</div>
+                    <div id="cd-status">【状　況】<span id="cd-status-t">座標選択待機中</span></div>
+                    <div id="range">【距　離】<span id="range-value">-----</span> [m]</div>
+                    <div id="pitch">【ピッチ】<span id="pitch-value">-----</span> [°]</div>
+                    <div id="yaw">【ヨ　ー】<span id="yaw-value">-----</span> [°]</div>
+                    <div id="turn">【回転数】<span id="turn-value">-----</span> [turn/s]</div>
                 </div>
-                <div class="inj-btn-field large-btn">
-                    <input type="button" value="射出" id="inj-btn" class="ctrl-btn" disabled>
+                <div class="aim-btn-field">
+                    <input type="button" value="照準" id="aim-btn" class="ctrl-btn no-pad" disabled>
                 </div>
-                <div class="rcv-btn-field large-btn">
-                    <input type="button" value="復旧" id="rcv-btn" class="ctrl-btn">
+                <div class="inj-btn-field">
+                    <input type="button" value="射撃" id="inj-btn" class="ctrl-btn no-pad" disabled>
+                </div>
+                <div class="rcv-btn-field">
+                    <input type="button" value="復旧" id="rcv-btn" class="ctrl-btn no-pad">
                 </div>
             </div>
+        </div>
+
+        <!-- マニュアルコントローラ -->
+        <div class="manual-ctrl">
+            <details>
+                <summary>マニュアルコントローラ</summary>
+                <div class="debug-view">
+
+                </div>
+                <div class="manual-ctrl-field">
+                    <div class="manual-btns-field">
+                        <div class="manual-btns">
+                            <input type="button" id= "" class="manual-btn btn-top no-pad" value="▲">
+                            <input type="button" id= "" class="manual-btn btn-bottom no-pad" value="▲">
+                            <input type="button" id= "" class="manual-btn btn-left no-pad" value="▲">
+                            <input type="button" id= "" class="manual-btn btn-right no-pad" value="▲">
+                            <input type="button" id= "manual-cal-btn" class="manual-btn btn-center no-pad" value="較正">
+                        </div>
+                    </div>
+                    <div class="manual-inputs">
+                        <div class="manual-input-field manual-input">
+                            <input type="button" id="pitch-dec" class="manual-input-btn pm-font-size no-pad" value="-">
+                            <input type="number" name="pitch" id="manual-pitch-value" class="manual-input-btn placeholder-font-size no-pad" placeholder="ピッチ [deg]" step="0.1" min="0" max="90">
+                            <input type="button" id="pitch-inc" class="manual-input-btn pm-font-size no-pad" value="+">
+                        </div>
+                        <div class="manual-input-field manual-input">
+                            <input type="button" id="yaw-dec" class="manual-input-btn pm-font-size no-pad" value="-">
+                            <input type="number" name="yaw" id="manual-yaw-value" class="manual-input-btn placeholder-font-size no-pad" placeholder="ヨー [deg]" step="0.1" min="-90" max="90">
+                            <input type="button" id="yaw-inc" class="manual-input-btn pm-font-size no-pad" value="+">
+                        </div>
+                        <div class="manual-input-field manual-input">
+                            <input type="button" id="turn-dec" class="manual-input-btn pm-font-size no-pad" value="-">
+                            <input type="number" name="turn" id="manual-turn-value" class="manual-input-btn placeholder-font-size no-pad" placeholder="回転数 [turn/s]" step="0.1" min="0" max="100">
+                            <input type="button" id="turn-inc" class="manual-input-btn pm-font-size no-pad" value="+">
+                        </div>
+                        <div class="manual-aim-btn-field">
+                            <input type="button" id="manual-aim-btn" class="manual-input manual-aim-btn no-pad" value="照準">
+                        </div>
+                        <div class="manual-inj-btn-field">
+                            <input type="button" id="manual-inj-btn" class="manual-input manual-inj-btn no-pad" value="装填">
+                        </div>
+                        <div class="manual-rcv-btn-field">
+                            <input type="button" id="manual-rcv-btn" class="manual-input manual-rcv-btn no-pad" value="復旧">
+                        </div>
+                    </div>
+                </div>
+            </details>
         </div>
 
         <!-- 設定部分 -->
@@ -63,8 +114,8 @@
             <input type="button" value="R1" id="connect_R1">
             <input type="button" value="R2" id="connect_R2">
             <input type="button" value="試験" id="connect_Test">
-            <input type="button" value="情報" id="info" class="set">
-            <input type="button" value="通知" id="notice" class="set">
+            <input type="button" value="情報" id="info">
+            <input type="button" value="通知" id="notice">
         </div>
     </div>
     <script type="text/javascript" src="script.js"></script>

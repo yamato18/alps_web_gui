@@ -1,115 +1,207 @@
-// ROS接続
+// ROS
+let ros = null;
+
+// トピックの宣言
+let aim_trigger, air_trigger, reset_trigger, cal_trigger;
+
+// 照準用パラメータ
+let aimParams = {
+    velocity: NaN,
+    pitch: NaN,
+    yaw: NaN
+};
+
+// rad -> deg 変換
+/**
+ * 
+ * @param {number} rad ラジアン
+ * @returns 度
+ */
+const rad2deg = (rad) => rad * (180 / Math.PI);
+
+// rad -> deg 変換
+/**
+ * 
+ * @param {number} deg 度
+ * @returns ラジアン
+ */
+const deg2rad = (deg) => deg * (Math.PI / 180);
+
+/**
+ * 
+ * @brief `$(id)`を短縮
+ * @param {*} id id
+ * @returns 短縮
+ */
+const $ = (id) => document.getElementById(id);
+
+/**
+ * 
+ * @param {string} title 通知タイトル
+ * @param {string} body 通知本文
+ */
+const showNotification = (title, body) => {
+    if (Notification.permission === "granted") {
+        navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(title, {
+                body: body,
+            });
+        });
+    } else {
+        alert(title + "\n" + body + "\n\n※通知を許可してください");
+    }
+};
+
+/**
+ * 
+ * @brief マーカー削除
+ */
+const removeMarker = () => {
+    document.querySelectorAll(".marker").forEach(marker => marker.remove());
+};
+
+/**
+ * 
+ * @brief マーカー作成
+ * @param {string} src 
+ * @param {number} x 
+ * @param {number} y 
+ */
+const createMarker = (src, x, y) => {
+    const marker = document.createElement("img");
+        marker.className = "marker";
+        marker.src = src;
+        marker.style.left = `${x}px`;
+        marker.style.top = `${y}px`;
+        $("img-field").appendChild(marker);
+};
+
+/**
+ * 
+ * @brief ROSクライアント
+ * @param {string} protocol ws / wss
+ * @param {string} ip IPアドレス
+ * @param {string} port ポート番号
+ * @param {string} ros_domain_id ROS_DOMAIN_ID
+ * @returns 
+ */
 const connectROS = (protocol, ip, port, ros_domain_id) => {
 
+    if (ros) return;
+
     // roslib.js
-    const ros = new ROSLIB.Ros({
+    ros = new ROSLIB.Ros({
         url: `${protocol}://${ip}:${port}`,
         options: {
             ros_domain_id: ros_domain_id
         }
     })
 
-    let isConnected = false;
-
     ros.on("connection", () => {
-        const status = document.getElementById("status");
-        status.textContent = `🟢【ROS接続状況】接続済（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
+        $("status").textContent = `🟢【ROS接続状況】接続済（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("【INFO】Connected");
 
-        isConnected = true;
-
-        // CompressedImage型
-        const image = new ROSLIB.Topic({
+        // トピックを初期化
+        // 照準用トピック
+        aim_trigger = new ROSLIB.Topic({
             ros: ros,
-            name: "/camera/rgb/image_raw/compressed",
-            messageType: "sensor_msgs/msg/CompressedImage"
+            name: "/shooting/aim_info",
+            messageType: "shooting_interfaces/msg/ShootingAimInfo"
         });
-        // ROS接続成功で購読開始
-        image.subscribe((message) => {
-            const data = "data:image/png;base64," + message.data;
-            document.getElementById("ros_image").setAttribute("src", data);
+
+        // 射撃用トピック
+        air_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/trigger/gui",
+            messageType: "std_msgs/Bool"
         });
+
+        // リセット用トピック
+        reset_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/aim_info/reset",
+            messageType: "std_msgs/Bool"
+        });
+
+        // キャリブレーション用トピック
+        cal_trigger = new ROSLIB.Topic({
+            ros: ros,
+            name: "/shooting/reset/gui",
+            messageType: "std_msgs/Bool"
+        });
+
+        rosSubscriptions();
     });
 
     // エラー発生時
     ros.on("error", (error) => {
-        const status = document.getElementById("status");
-        status.textContent = `🔴【ROS接続状況】エラー（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
+        $("status").textContent = `🔴【ROS接続状況】エラー（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("【ERROR】", error);
-        isConnected = false;
-        document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
+        $("ros_image").src = "./NO SIGNAL.png";
+        ros = null;
     });
 
-    // 接続修了時
+    // 接続終了時
     ros.on("close", () => {
-        const status = document.getElementById("status");
-        status.textContent = `🟡【ROS接続状況】未接続（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
+        $("status").textContent = `🟡【ROS接続状況】未接続（${protocol}://${ip}:${port} ID=${ros_domain_id}）`;
         console.log("【INFO】Connection closed");
-        isConnected = false;
-        document.getElementById("ros_image").setAttribute("src", "./NO SIGNAL.png");
+        $("ros_image").src = "./NO SIGNAL.png";
+        ros = null;
+    });
+
+    imageClickHandler();
+};
+
+/**
+ * @brief Topic購読
+ */
+const rosSubscriptions = () => {
+    
+    // CompressedImage型
+    new ROSLIB.Topic({
+        ros: ros,
+        name: "/camera/rgb/image_raw/compressed",
+        messageType: "sensor_msgs/msg/CompressedImage"
+    }).subscribe((msg) => {
+        $("ros_image").src = "data:image/jpeg;base64," + msg.data;
     });
 
     // Notification型
-    const ros_notification = new ROSLIB.Topic({
+    new ROSLIB.Topic({
         ros: ros,
         name: "/Notification",
         messageType: "web_gui_interfaces/msg/Notification"
-    });
-    // ROS接続成功で購読開始
-    ros_notification.subscribe((message) => {
-        console.log(message);
-        
-        if (Notification.permission === "granted") {
-            navigator.serviceWorker.ready.then((registration) => {
-                registration.showNotification(message.title, {
-                    body: message.body,
-                });
-            });
-        } else {
-            alert(message.title + "\n" + message.body + "\n\n※通知を許可してください");
-        }
+    }).subscribe((msg) => {
+        console.log(msg);
+        showNotification(msg.title, msg.body);
     });
 
-    // 射出指示
-    const trigger = new ROSLIB.Topic({
-        ros: ros,
-        name: "/shooting/trigger",
-        messageType: "std_msgs/Bool"
-    })
+    // Auto Detect
 
-    // リセット指示
-    const reset = new ROSLIB.Topic({
-        ros: ros,
-        name: "/shooting/reset",
-        messageType: "std_msgs/Bool"
-    })
+};
 
-    let getPoint3D = null;
+/**
+ * 
+ * @brief 画像クリック時のイベントハンドラ
+ */
+const imageClickHandler = () => {
+     // 座標取得・照準描写
+    $("ros_image").addEventListener("click", (event) => {
 
-    // Serviceクライアント
-    if (!getPoint3D) {
-        getPoint3D = new ROSLIB.Service({
-            ros: ros,
-            name: "/get_point3_d",
-            serviceType: "web_gui_interfaces/srv/GetPoint3D"
-        });
-    };
-
-    // マーカー削除
-    const img_field = document.getElementById("img-field");
-    const removeMarker = () => {
-        const existMarkers = img_field.getElementsByClassName("marker");
-        while (0 < existMarkers.length) {
-            existMarkers[0].remove();
-        }
-    }
-
-    // 座標取得・照準描写
-    const img = document.getElementById("ros_image");
-    img.addEventListener("click", (event) => {
-        const rect = img.getBoundingClientRect();
+        const rect = $("ros_image").getBoundingClientRect();
         const ax = Math.round(event.clientX) + 1;
         const ay = Math.round(event.clientY) + 1;
+
+        // マーカー削除
+        removeMarker();
+
+        // マーカー作成
+        const marker_l = ax + Math.round(window.scrollX) - 40;
+        const marker_t = ay + Math.round(window.scrollY) - 40;
+        createMarker("./marker.png", marker_l, marker_t);
+
+        if (!ros) return;
+        
         let x, y;
         if (rect.width == 320) {
             x = 2 * (ax - Math.round(rect.left));
@@ -128,145 +220,378 @@ const connectROS = (protocol, ip, port, ros_domain_id) => {
             y = 479;
         }
 
-        document.getElementById("cd-status-t").textContent = "座標取得中";
-        document.getElementById("cd-xy-x").textContent = x;
-        document.getElementById("cd-xy-y").textContent = y;
+        $("cd-status-t").textContent = "座標取得中";
         const point_index = y * 640 + x;
-        document.getElementById("cd-xy-i").textContent = point_index;
 
-        // マーカー削除
-        removeMarker();
+        getPointService(x, y, point_index);
+    });
+};
 
-        // マーカー作成
-        const marker = document.createElement("img");
-        marker.className = "marker";
-        marker.src = "./marker.png";
-        marker.style.left = `${ax + Math.round(window.scrollX) - 40}px`;
-        marker.style.top = `${ay + Math.round(window.scrollY) - 40}px`;
-        img_field.appendChild(marker);
+/**
+ * 
+ * @brief パラメータ取得サービス
+ * @param {number} x 
+ * @param {number} y 
+ * @param {number} point_index 
+ */
+const getPointService = (x, y, point_index) => {
+    $("cd-status-t").textContent = "座標計算中";
 
-        // ROS接続成功時に送信
-        if (isConnected) {
-            document.getElementById("cd-status-t").textContent = "座標計算中";
-            const request = new ROSLIB.ServiceRequest({
-                point2d: { index: point_index }
-            });
-            getPoint3D.callService(request, (response) => {
-                const xyz = response.point3d_xyz;
-                const rtp = response.point3d_rtp;
+    // Serviceクライアント
+    const getPoint3D = new ROSLIB.Service({
+        ros: ros,
+        name: "/get_point3_d",
+        serviceType: "web_gui_interfaces/srv/GetPoint3D"
+    });
 
-                document.getElementById("cd-xyz-x").textContent = isNaN(xyz.x) ? xyz.x : parseFloat(xyz.x).toFixed(2);
-                document.getElementById("cd-xyz-y").textContent = isNaN(xyz.y) ? xyz.y : parseFloat(xyz.y).toFixed(2);
-                document.getElementById("cd-xyz-z").textContent = isNaN(xyz.z) ? xyz.z : parseFloat(xyz.z).toFixed(2);
-
-                document.getElementById("cd-rtp-r").textContent = isNaN(rtp.range) ? rtp.range : parseFloat(rtp.range).toFixed(2);
-                document.getElementById("cd-rtp-t").textContent = isNaN(rtp.theta) ? rtp.theta : parseFloat(rtp.theta).toFixed(2);
-                document.getElementById("cd-rtp-p").textContent = isNaN(rtp.phi) ? rtp.phi : parseFloat(rtp.phi).toFixed(2);
-            });
-            document.getElementById("cd-status-t").textContent = "座標表示中";
+    const request = new ROSLIB.ServiceRequest({
+        point2d: { 
+            x: x,
+            y: y,
+            index: point_index
         }
-
-        // 射出ボタンEnabled
-        document.getElementById("inj-btn").disabled = false;
     });
 
-    // 「射出」押下時
-    document.getElementById("inj-btn").addEventListener("click", () => {
-        console.log("射出");
-        document.getElementById("cd-status-t").textContent = "射出実行中";
+    getPoint3D.callService(request, (response) => {
+        // const point3d = response.point3d;
+        const param = response.shootparam;
+        const r = param.shoot_range;
+        const p = param.shoot_pitch;
+        const y = param.shoot_yaw;
+        const n = param.shoot_n;
 
+        // Publish用
+        aimParams = {
+            velocity: n,
+            pitch: p,
+            yaw: y
+        };
+
+        $("range-value").textContent = isNaN(r) ? r : parseFloat(r).toFixed(2);
+        $("pitch-value").textContent = isNaN(p) ? p : rad2deg(parseFloat(p)).toFixed(2);
+        $("yaw-value").textContent = isNaN(y) ? y : rad2deg(parseFloat(y)).toFixed(2);
+        $("turn-value").textContent = isNaN(n) ? n : parseFloat(n).toFixed(2);
+
+        const isValidParams = !isNaN(n) && n !== null &&
+                            !isNaN(p) && p !== null && 
+                            !isNaN(y) && y !== null;
+        if (isValidParams) {
+            $("aim-btn").disabled = false;
+            $("cd-status-t").textContent = "照準待機中";
+        } else {
+            $("aim-btn").disabled = true;
+            $("cd-status-t").textContent = "座標選択待機中";
+        }  
+    });  
+};
+
+/**
+ * 
+ * @brief リセット処理
+ */
+const reset = () => {
+    console.log("復旧");
+    $("cd-status-t").textContent = "座標選択待機中";
+
+    $("range-value").textContent = "-----";
+    $("pitch-value").textContent = "-----";
+    $("yaw-value").textContent = "-----";
+    $("turn-value").textContent = "-----";
+
+    // マーカー削除
+    removeMarker();
+
+    // 照準ボタンDisabled
+    $("aim-btn").disabled = true;
+    // 射撃ボタンDisabled
+    $("inj-btn").disabled = true;
+
+    const reset_msg = new ROSLIB.Message({
+        data: true
+    });
+    reset_trigger.publish(reset_msg);
+};
+
+// 「照準」押下時
+$("aim-btn").addEventListener("click", () => {
+    console.log("オート照準");
+    $("cd-status-t").textContent = "オート照準中";
+
+    const isValidAimParams = !isNaN(aimParams.velocity) && aimParams.velocity !== null &&
+                             !isNaN(aimParams.pitch) && aimParams.pitch !== null &&
+                             !isNaN(aimParams.yaw) && aimParams.yaw !== null;
+    if (isValidAimParams) {
+        const aim_msg = new ROSLIB.Message({
+            velocity: aimParams.velocity,
+            pitch: aimParams.pitch,
+            yaw: aimParams.yaw
+        });
+        aim_trigger.publish(aim_msg);
+
+        $("inj-btn").disabled = false;
+        $("cd-status-t").textContent = "射撃準備完了";
+    } else {
+        $("inj-btn").disabled = true;
+        $("cd-status-t").textContent = "座標選択待機中";
+    }
+});
+
+// 「射撃」押下時
+$("inj-btn").addEventListener("click", () => {
+    console.log("射撃");
+    $("cd-status-t").textContent = "射撃実行中";
+    
+    const inj_msg = new ROSLIB.Message({
+            data: true
+    });
+    air_trigger.publish(inj_msg);
+
+    $("cd-status-t").textContent = "射撃指令送信完了";
+
+    if (window.confirm("【射撃指令送信完了】\n射出機構を停止し、初期化しますか？")) {
+        reset();
+        const inj_msg = new ROSLIB.Message({
+            data: false
+        });
+        air_trigger.publish(inj_msg);
+
+        // 照準ボタンDisabled
+        $("aim-btn").disabled = true;
+
+        $("cd-status-t").textContent = "座標選択待機中";
+    }
+});
+
+// 「復旧」押下時
+$("rcv-btn").addEventListener("click", () => {
+    reset();
+});
+
+// 「詳細」押下時
+// $("detail").addEventListener("click", () => {
+//     alert(
+//         // "2D x ---------> " + "100" + "\n" +
+//         // "2D y ---------> " + "200" + "\n" +
+//         // "2D index -----> " + "20000" + "\n" +
+//         // "3D X ---------> " + "300" + " [m]\n" +
+//         // "3D Y ---------> " + "400" + " [m]\n" +
+//         // "3D Z ---------> " + "500" + " [m]\n" +
+//         // "3D Range -----> " + "200" + " [m]\n" +
+//         // "3D Theta -----> " + "90" + " [°]\n" +
+//         // "3D Phi -------> " + "90" + " [°]\n" +
+//         // "Distance -----> " + "200" + " [m]\n" +
+//         // "Yaw ----------> " + "200" + " [°]\n" +
+//         // "Pitch --------> " + "200" + " [°]\n" +
+//         // "Velocity -----> " + "200" + " [m/s]\n" +
+//         // "N ------------> " + "200" + " [r/s]\n" +
+//         // "MaxHeight ----> " + "2" + " [m]\n" +
+//         // "isAutoDetect -> " + "false" + "\n" +
+//         // "Auto 2D x ---->" + "200" + "\n" +
+//         // "Auto 2D y ---->" + "200" + "\n"
+//     );
+// });
+
+// マニュアル照準
+// 「↑」押下時
+
+
+// 「↓」押下時
+
+
+// 「←」押下時
+
+
+// 「→」押下時
+
+
+// 「較正」押下時
+$("manual-cal-btn").addEventListener("click", () => {
+    console.log("キャリブレーション開始");
+    $("cd-status-t").textContent = "キャリブレーション中";
+
+    // インターロックは後で実装
+
+    const cal_msg = new ROSLIB.Message({
+        data: true
+    });
+    cal_trigger.publish(cal_msg);
+    
+    $("cd-status-t").textContent = "座標選択待機中";
+});
+
+// ピッチ調整
+$("pitch-dec").addEventListener("click", () => {
+    const currentValue = Number($("manual-pitch-value").value);
+    if (!(currentValue - 0.1 < 0)) {
+        $("manual-pitch-value").value = (currentValue - 0.1).toFixed(1);
+    }
+});
+$("pitch-inc").addEventListener("click", () => {
+    const currentValue = Number($("manual-pitch-value").value);
+    if (!(currentValue + 0.1 > 90)) {
+        $("manual-pitch-value").value = (currentValue + 0.1).toFixed(1);
+    }
+});
+
+// ヨー調整
+$("yaw-dec").addEventListener("click", () => {
+    const currentValue = Number($("manual-yaw-value").value);
+    if (!(currentValue - 0.1 < -90)) {
+        $("manual-yaw-value").value = (currentValue - 0.1).toFixed(1);
+    }
+});
+$("yaw-inc").addEventListener("click", () => {
+    const currentValue = Number($("manual-yaw-value").value);
+    if (!(currentValue + 0.1 > 90)) {
+        $("manual-yaw-value").value = (currentValue + 0.1).toFixed(1);
+    }
+});
+
+// 回転数調整
+$("turn-dec").addEventListener("click", () => {
+    const currentValue = Number($("manual-turn-value").value);
+    if (!(currentValue - 0.1 < 0)) {
+        $("manual-turn-value").value = (currentValue - 0.1).toFixed(1);
+    }
+});
+$("turn-inc").addEventListener("click", () => {
+    const currentValue = Number($("manual-turn-value").value);
+    if (!(currentValue + 0.1 > 100)) {
+        $("manual-turn-value").value = (currentValue + 0.1).toFixed(1);
+    }
+});
+
+// 「照準」押下時
+$("manual-aim-btn").addEventListener("click", () => {
+    console.log("マニュアル照準");
+    $("cd-status-t").textContent = "マニュアル照準中";
+
+    const manual_vel = Number($("manual-turn-value").value);
+    const manual_pitch = deg2rad(Number($("manual-pitch-value").value));
+    const manual_yaw = deg2rad(Number($("manual-yaw-value").value));
+
+    if (manual_vel !== null && manual_pitch !== null && manual_yaw !== null) {
         const trigger_msg = new ROSLIB.Message({
-            data: true
+            velocity: manual_vel,
+            pitch: manual_pitch,
+            yaw: manual_yaw
         });
-        trigger.publish(trigger_msg);
+        aim_trigger.publish(trigger_msg);
 
-        document.getElementById("cd-status-t").textContent = "射出完了";
-    });
+        $("cd-status-t").textContent = "射撃準備完了";
 
-    // 「復旧」押下時
-    document.getElementById("rcv-btn").addEventListener("click", () => {
-        console.log("復旧");
+    } else {
+        $("cd-status-t").textContent = "照準指令送信中止";
+    }
+});
 
-        document.getElementById("cd-status-t").textContent = "座標選択待機中";
-
-        document.getElementById("cd-xy-x").textContent = "x";
-        document.getElementById("cd-xy-y").textContent = "y";
-        document.getElementById("cd-xy-i").textContent = "i";
-
-        document.getElementById("cd-xyz-x").textContent = "x";
-        document.getElementById("cd-xyz-y").textContent = "y";
-        document.getElementById("cd-xyz-z").textContent = "z";
-
-        document.getElementById("cd-rtp-r").textContent = "r";
-        document.getElementById("cd-rtp-t").textContent = "θ";
-        document.getElementById("cd-rtp-p").textContent = "φ";
-
-        // マーカー削除
-        removeMarker();
-
-        // 射出ボタンDisabled
-        document.getElementById("inj-btn").disabled = true;
-
-        const reset_msg = new ROSLIB.Message({
+// 「装填」押下時
+$("manual-inj-btn").addEventListener("click", () => {
+    console.log("エアシリ作動");
+    $("cd-status-t").textContent = "エアシリ動作中";
+    
+    const inj_msg = new ROSLIB.Message({
             data: true
-        });
-        reset.publish(reset_msg);
     });
-}
+    air_trigger.publish(inj_msg);
+
+    $("cd-status-t").textContent = "エアシリ動作完了";
+});
+
+// 「復旧」押下時
+$("manual-rcv-btn").addEventListener("click", () => {
+    $("manual-pitch-value").value = "";
+    $("manual-yaw-value").value = "";
+    $("manual-turn-value").value = "";
+    reset();
+});
 
 // ページ読み込み時
-window.addEventListener("load", () => {
-    const protocol = document.getElementById("protocol").value;
-    const ip = document.getElementById("ip").value;
-    const port = document.getElementById("port").value;
-    const ros_domain_id = document.getElementById("ros_domain_id").value;
+window.addEventListener("DOMContentLoaded", () => {
+    const protocol = $("protocol").value;
+    const ip = $("ip").value;
+    const port = $("port").value;
+    const ros_domain_id = $("ros_domain_id").value;
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
 // 「接続」押下時
-document.getElementById("connect").addEventListener("click", () => {
-    const protocol = document.getElementById("protocol").value;
-    const ip = document.getElementById("ip").value;
-    const port = document.getElementById("port").value;
-    const ros_domain_id = document.getElementById("ros_domain_id").value;
+$("connect").addEventListener("click", () => {
+    const protocol = $("protocol").value;
+    const ip = $("ip").value;
+    const port = $("port").value;
+    const ros_domain_id = $("ros_domain_id").value;
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
 // 「R1」押下時
-document.getElementById("connect_R1").addEventListener("click", () => {
+$("connect_R1").addEventListener("click", () => {
     const protocol = "wss";
-    document.getElementById("protocol").value = protocol;
+    $("protocol").value = protocol;
     const ip = "192.168.2.10";
-    document.getElementById("ip").value = ip;
+    $("ip").value = ip;
     const port = "9090";
-    document.getElementById("port").value = port;
+    $("port").value = port;
     const ros_domain_id = "10";
-    document.getElementById("ros_domain_id").value = ros_domain_id;
+    $("ros_domain_id").value = ros_domain_id;
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
 // 「R2」押下時
-document.getElementById("connect_R2").addEventListener("click", () => {
+$("connect_R2").addEventListener("click", () => {
     const protocol = "wss";
-    document.getElementById("protocol").value = protocol;
+    $("protocol").value = protocol;
     const ip = "192.168.2.20";
-    document.getElementById("ip").value = ip;
+    $("ip").value = ip;
     const port = "9090";
-    document.getElementById("port").value = port;
+    $("port").value = port;
     const ros_domain_id = "20";
-    document.getElementById("ros_domain_id").value = ros_domain_id;
+    $("ros_domain_id").value = ros_domain_id;
     connectROS(protocol, ip, port, ros_domain_id);
 });
 
 // 「試験」押下時
-document.getElementById("connect_Test").addEventListener("click", () => {
+$("connect_Test").addEventListener("click", () => {
     const protocol = "wss";
-    document.getElementById("protocol").value = protocol;
+    $("protocol").value = protocol;
     const ip = "dell-pc.local";
-    document.getElementById("ip").value = ip;
+    $("ip").value = ip;
     const port = "9090";
-    document.getElementById("port").value = port;
+    $("port").value = port;
     const ros_domain_id = "10";
-    document.getElementById("ros_domain_id").value = ros_domain_id;
+    $("ros_domain_id").value = ros_domain_id;
     connectROS(protocol, ip, port, ros_domain_id);
 });
+
+
+// // Point2D型
+// const autoDetect = new ROSLIB.Topic({
+//     ros: ros,
+//     name: "/goal_auto_detect",
+//     messageType: "web_gui_interfaces/msg/Point2D"
+// });
+// // ROS接続成功で購読開始
+// autoDetect.subscribe((msg) => {
+//     let auto_x = msg.x;
+//     let auto_y = msg.y;
+
+//     const img = $("ros_image");
+//     const rect = img.getBoundingClientRect();
+//     if (rect.width == 320) {
+//         auto_x = Math.round(auto_x / 2);
+//     }
+//     if (rect.height == 240) {
+//         auto_y = Math.round(auto_y / 2);
+//     }
+    
+//     // マーカー削除
+//     removeMarker();
+
+//     // マーカー作成
+//     const marker = document.createElement("img");
+//     marker.className = "marker";
+//     marker.src = "./marker_auto.png";
+//     marker.style.left = `${auto_x + Math.round(window.scrollX) - 40 + 8}px`;
+//     marker.style.top = `${auto_y + Math.round(window.scrollY) - 40 + 61}px`;
+//     img_field.appendChild(marker);
+// });
